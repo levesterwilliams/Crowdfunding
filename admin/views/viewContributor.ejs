@@ -1,0 +1,50 @@
+<html>
+
+<body>
+<b><%= status %></b>
+<p>
+
+ID: <%= contributor._id %><br>
+Name: <%= contributor.name %><br>
+Login: <%= contributor.login %><br>
+Password: <%= contributor.password %><br>
+Email: <%= contributor.email %><br>
+Credit Card Number: <%= contributor.creditCardNumber %><br>
+Credit Card CVV: <%= contributor.creditCardCVV %><br>
+Credit Card Expiry Month: <%= contributor.creditCardExpiryMonth %><br>
+Credit Card Expiry Year: <%= contributor.creditCardExpiryYear %><br>
+Credit Card PostCode: <%= contributor.creditCardPostCode %><br>
+<p>
+<% if (contributor.donations && contributor.donations.length > 0) { %>
+Donations:
+<ol>
+<%
+   contributor.donations.forEach( (donation) => { %>
+
+   <li><%= donation.fundName %>: $<%= donation.amount %> on <%= donation.date %></li>
+
+   <% })
+%>
+</ol>
+
+<%
+   var total = 0;
+   contributor.donations.forEach( (donation) => { total += donation.amount; } );
+%>
+Total donations: $<%= total %>
+
+<% } %>
+
+<p>
+<a href="editContributor?id=<%= contributor._id %>">Edit Contributor</a>
+<p>
+<a href="deleteContributor?id=<%= contributor._id %>">Delete Contributor</a>
+<p>
+<a href="allContributors">View All Contributors</a>
+
+
+</body>
+
+
+
+</html>

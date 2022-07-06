@@ -1,0 +1,24 @@
+<html>
+
+<body>
+
+<form method="POST" action="updateOrg">
+ID: <input name="id" value="<%= org._id %>" readonly><br>
+Name: <input name="name" value="<%= org.name %>"><br>
+Login: <input name="login" value="<%= org.login %>"><br>
+Password: <input name="password" value="<%= org.password %>"><br>
+Description: <input name="description" value="<%= org.description %>"><br>
+<input type="submit" value="Update Organization">
+
+<p>
+
+<a href="deleteOrg?id=<%= org._id %>">Delete Organization</a>
+<p>
+<a href="allOrgs">View All Organizations</a>
+
+
+</body>
+
+
+
+</html>

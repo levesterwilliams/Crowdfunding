@@ -1,0 +1,21 @@
+<html>
+
+<body>
+
+<ul>
+<% result.forEach( (contributor) => { %>
+
+   <li><b><%= contributor.name %></b> (ID=<%= contributor.id %>): <a href="viewContributor?id=<%= contributor.id %>">View</a> | <a href="editContributor?id=<%= contributor.id %>">Edit</a> | <a href="deleteContributor?id=<%= contributor.id %>">Delete</a></li>
+
+<% }) %>
+</ul>
+
+<p>
+<a href="forms/newContributor.html">Create New Contributor</a>
+
+
+</body>
+
+
+
+</html>

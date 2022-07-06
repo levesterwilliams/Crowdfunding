@@ -1,0 +1,29 @@
+<html>
+
+<body>
+<form method="POST" action="updateContributor">
+ID : <input name="id"  value="<%= contributor._id %>" readyonly><br>
+Name: <input name="name"  value="<%= contributor.name %>"><br>
+Login: <input name="login" value="<%= contributor.login %>"><br>
+Password: <input name="password" value="<%= contributor.password %>"><br>
+Email: <input name="email" value="<%= contributor.email %>"><br>
+Credit Card Number: <input name="card_number" value="<%= contributor.creditCardNumber %>"><br>
+Credit Card CVV: <input name="card_cvv" value="<%= contributor.creditCardCVV %>"><br>
+Credit Card Expiry Month: <input name="card_month" value="<%= contributor.creditCardExpiryMonth %>"><br>
+Credit Card Expiry Year: <input name="card_year" value="<%= contributor.creditCardExpiryYear %>"><br>
+Credit Card PostCode: <input name="card_postcode" value="<%= contributor.creditCardPostCode %>"><br>
+<input type="submit" value="Update Contributor">
+
+</form>
+
+<p>
+<a href="deleteContributor?id=<%= contributor.id %>">Delete Contributor</a>
+<p>
+<a href="../allContributors">View All Contributors</a>
+
+
+</body>
+
+
+
+</html>

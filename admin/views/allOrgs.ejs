@@ -1,0 +1,23 @@
+<html>
+
+<body>
+
+<ul>
+<% result.forEach( (org) => { %>
+
+   <li><b><%= org.name %></b>: <a href="viewOrg?id=<%= org._id %>">View</a> | <a href="editOrg?id=<%= org._id %>">Edit</a> | <a href="deleteOrg?id=<%= org._id %>">Delete</a> | <a href="newFund?id=<%= org._id %>">Create New Fund</a></li>
+
+<% }) %>
+</ul>
+
+<p>
+<a href="forms/newOrg.html">Create New Organization</a>
+
+<p>
+<a href="/allContributors">Administer Contributors</a>
+
+</body>
+
+
+
+</html>

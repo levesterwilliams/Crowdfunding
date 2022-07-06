@@ -1,0 +1,23 @@
+<html>
+
+<body>
+<form method="POST" action="createFund">
+Organization: <%= org.name %><br>
+<input name="orgId" value="<%= org.id %>" hidden><br>
+Name: <input name="name"><br>
+Description: <input name="description"><br>
+Target: <input name="target"><br>
+<input type="submit" value="Create Fund">
+
+
+</form>
+
+<p>
+<a href="allOrgs">View All Organizations</a>
+
+
+</body>
+
+
+
+</html>

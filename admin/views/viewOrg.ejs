@@ -1,0 +1,40 @@
+<html>
+
+<body>
+<b><%= status %></b>
+<p>
+
+Id: <%= org._id %><br>
+Name: <%= org.name %><br>
+Login: <%= org.login %><br>
+Password: <%= org.password %><br>
+Description: <%= org.description %>
+<p>
+<% if (org.funds && org.funds.length > 0) { %>
+Funds:
+<ul>
+<%
+   org.funds.forEach( (fund) => { %>
+
+   <li><%= fund.name %>: <a href="viewFund?id=<%= fund.id %>">View</a> | <a href="editFund?id=<%= fund.id %>">Edit</a> | <a href="deleteFund?id=<%= fund.id %>">Delete</a></li>
+
+   <% })
+%>
+</ul>
+<% } %>
+
+<p>
+<a href="editOrg?id=<%= org.id %>">Edit Organization</a>
+<p>
+<a href="newFund?id=<%= org.id %>">Add New Fund</a>
+<p>
+<a href="deleteOrg?id=<%= org.id %>">Delete Organization</a>
+<p>
+<a href="allOrgs">View All Organizations</a>
+
+
+</body>
+
+
+
+</html>

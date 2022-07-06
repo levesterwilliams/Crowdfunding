@@ -1,0 +1,56 @@
+<html>
+
+<body>
+<b><%= status %></b>
+<p>
+
+Id: <%= fund._id %><br>
+Name: <%= fund.name %><br>
+Description: <%= fund.description %><br>
+Target: <%= fund.target %><br>
+<p>
+<% if (fund.donations && fund.donations.length > 0) { %>
+Donations:
+<ol>
+<%
+   fund.donations.forEach( (donation) => { %>
+
+   <li><%= donation.contributorName %>: $<%= donation.amount %> on <%= donation.date %></li>
+
+   <% })
+%>
+</ol>
+
+<%
+   var total = 0;
+   fund.donations.forEach( (donation) => { total += donation.amount; } );
+%>
+Total donations: $<%= total %>
+<% } %>
+<p>
+<form method="POST" action="/makeDonation?fund_id=<%= fund._id %>">
+Make donation:<br>
+
+Contributor: <select name="contributor_id">
+<%
+allContributors.forEach( (contributor) => { %>
+<option value="<%= contributor._id %>"><%= contributor.name %></option>
+<% }); %>
+</select><br>
+
+Amount: <input name="amount">
+<input type="submit">
+</form>
+<p>
+<a href="editFund?id=<%= fund._id %>">Edit Fund</a>
+<p>
+<a href="deleteFund?id=<%= fund._id %>">Delete Fund</a>
+<p>
+<a href="allOrgs">View All Organizations</a>
+
+
+</body>
+
+
+
+</html>
