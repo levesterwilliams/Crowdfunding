@@ -84,8 +84,8 @@ public class UserInterface {
 
         DataManager ds = new DataManager(new WebClient("localhost", 3001));
 
-        String login = "login";
-        String password = "password";
+        String login = "test";
+        String password = "test";
 
         Organization org = ds.attemptLogin(login, password);
 
