@@ -59,7 +59,11 @@ public class UserInterface {
     }
 
     public void displayFund(int fundNumber) {
-
+        
+        //Task 1.3
+    	long donations_sum = 0;
+    	long donations_percent = 0;
+        
         Fund fund = org.getFunds().get(fundNumber - 1);
 
         System.out.println("\n\n");
@@ -73,8 +77,17 @@ public class UserInterface {
         for (Donation donation : donations) {
             System.out.println("* " + donation.getContributorName() + ": $" + donation.getAmount()
                     + " on " + donation.getDate());
+            
+            //Task 1.3
+			donations_sum = donations_sum + donation.getAmount();
         }
-
+        
+        //Task 1.3
+      	donations_percent = donations_sum * 100/ fund.getTarget();
+      		
+      	//Task 1.3 
+      	System.out.println("Total donation amount: $" + donations_sum + " (" + donations_percent + "% of target)");
+        
         System.out.println("Press the Enter key to go back to the listing of funds");
         in.nextLine();
 
