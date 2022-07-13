@@ -60,9 +60,13 @@ public class UserInterface {
 
     public void displayFund(int fundNumber) {
         
+<<<<<<< HEAD
 //Task_1.8
         //Task 1.3 test
 
+=======
+        //Task 1.3
+>>>>>>> testing
     	long donations_sum = 0;
     	long donations_percent = 0;
         
@@ -80,9 +84,13 @@ public class UserInterface {
             System.out.println("* " + donation.getContributorName() + ": $" + donation.getAmount()
                     + " on " + donation.getDate());
             
+<<<<<<< HEAD
 //Task_1.8
             //Task 1.3 test
 
+=======
+            //Task 1.3
+>>>>>>> testing
 			donations_sum = donations_sum + donation.getAmount();
         }
         
