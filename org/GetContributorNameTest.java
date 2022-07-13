@@ -24,11 +24,11 @@ public class GetContributorNameTest {
 
             @Override
             public String makeRequest(String resource, Map<String, Object> queryParams) {
-
-                JSONObject obj = new JSONObject(); // creates the JSONObject for entire request
+                // creates the JSONObject for entire request
+                JSONObject obj = new JSONObject();
                 obj.put("status", "success");
                 obj.put("data", "Sizwe Nvodlu");
-                String jsonString = obj.toJSONString(); // converts JSONObject to String
+                String jsonString = obj.toJSONString();
                 return jsonString;
             }
 
@@ -47,11 +47,10 @@ public class GetContributorNameTest {
 
             @Override
             public String makeRequest(String resource, Map<String, Object> queryParams) {
-
-                JSONObject obj = new JSONObject(); // creates the JSONObject for entire request
+                // creates the JSONObject for entire request
+                JSONObject obj = new JSONObject();
                 obj.put("status", "fail");
-                obj.put("data", "Sizwe Nvodlu");
-                String jsonString = obj.toJSONString(); // converts JSONObject to String
+                String jsonString = obj.toJSONString();
                 return jsonString;
             }
 

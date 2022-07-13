@@ -6,6 +6,12 @@ import java.util.Map;
 
 import org.junit.Test;
 
+/**
+ * A testing suite for DataManager.createFund() method.
+ * 
+ * @author Levester Williams
+ *
+ */
 public class DataManager_createFund_Test {
 
     /*
@@ -15,7 +21,6 @@ public class DataManager_createFund_Test {
      * When writing tests for other methods, be sure to put them into separate JUnit
      * test classes
      */
-
     @Test
     public void testSuccessfulCreation() {
 
@@ -44,13 +49,11 @@ public class DataManager_createFund_Test {
      */
     @Test
     public void testUnSuccessfulCreation() {
-
         DataManager dm = new DataManager(new WebClient("localhost", 3001) {
 
             @Override
             public String makeRequest(String resource, Map<String, Object> queryParams) {
-                return "{\"status\":\"fail\",\"data\":{\"_id\":\"12345\",\"name\":\"new fund\",\"description\":\"this is the new fund\",\"target\":10000,\"org\":\"5678\",\"donations\":[],\"__v\":0}}";
-
+                return "{\"status\":\"fail\"}";
             }
 
         });
