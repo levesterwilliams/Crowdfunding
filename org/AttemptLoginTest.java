@@ -1,5 +1,6 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.List;
 import java.util.Map;
@@ -8,8 +9,17 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.junit.Test;
 
+/**
+ * A testing suite to test DataManager.attemptLogin() method.
+ * 
+ * @author Levester Williams
+ *
+ */
 public class AttemptLoginTest {
 
+    /**
+     * Tests DataManager.attemptLogin() with successful login.
+     */
     @Test
     public void testSuccessfulLogin() {
 
@@ -17,11 +27,8 @@ public class AttemptLoginTest {
 
             @Override
             public String makeRequest(String resource, Map<String, Object> queryParams) {
-                // return "{\"status\":\"success\",\"data\":{\"_id\":\"12345\",\"name\":\"new
-                // fund\",\"description\":\"this is the new
-                // fund\",\"target\":10000,\"org\":\"5678\",\"donations\":[],\"__v\":0}}";
 
-                JSONObject obj = new JSONObject(); // creates the JSONArray for entire request
+                JSONObject obj = new JSONObject(); // creates the JSONObject for entire request
                 obj.put("status", "success");
                 JSONObject data = new JSONObject();
                 data.put("_id", "12345");
@@ -40,13 +47,13 @@ public class AttemptLoginTest {
                 arrDatDonations.put("contributor", "2223");
                 arrDatDonations.put("amount", 250);
                 arrDatDonations.put("date", "July 1st, 2001");
-                donations.add(arrDatDonations); // adds JSON object of donation into JSONArray
-                                                // donations
+                donations.add(arrDatDonations); // adds JSON object of donation into donations
 
-                arrData.put("donations", donations); // adds JSONArray donations as an JSONObject in
-                                                     // arrData for funds
+                // adds JSONArray donations as an JSONObject into arrData--the JSONObect for
+                // funds
+                arrData.put("donations", donations);
 
-                funds.add(arrData); // places the JSONObjects into the JSONArray funds
+                funds.add(arrData); // places the JSONObject into the JSONArray funds
                 data.put("funds", funds); // places the JSONArray into the JSONObject data
                 obj.put("data", data);
 
@@ -70,6 +77,54 @@ public class AttemptLoginTest {
         assertEquals("0200", donations.get(0).getFundId());
         assertEquals(250, donations.get(0).getAmount());
         assertEquals("July 1st, 2001", donations.get(0).getDate());
+    }
 
+    /**
+     * Tests DataManager.attemptLogin() with successful login.
+     */
+    @Test
+    public void testUnSuccessfulLogin() {
+
+        DataManager dm = new DataManager(new WebClient("localhost", 3001) {
+
+            @Override
+            public String makeRequest(String resource, Map<String, Object> queryParams) {
+
+                JSONObject obj = new JSONObject(); // creates the JSONArray for entire request
+                obj.put("status", "fail");
+                JSONObject data = new JSONObject();
+                data.put("_id", "12345");
+                data.put("name", "ACLU");
+                data.put("description", "American Civil Liberties Union");
+
+                JSONArray funds = new JSONArray(); // creates the JSONArray for funds
+                JSONObject arrData = new JSONObject(); // creates the data to go into the JSONArray
+                arrData.put("_id", "0200");
+                arrData.put("name", "Privacy Rights fund");
+                arrData.put("description", "Fundraising to preserve and protect privacy rights");
+                arrData.put("target", 700000);
+
+                JSONArray donations = new JSONArray(); // creates the JSONArray for donations
+                JSONObject arrDatDonations = new JSONObject();
+                arrDatDonations.put("contributor", "2223");
+                arrDatDonations.put("amount", 250);
+                arrDatDonations.put("date", "July 1st, 2001");
+                donations.add(arrDatDonations); // adds JSON object of donation into donations
+
+                // adds JSONArray donations as an JSONObject into arrData--the JSONObect for
+                // funds
+                arrData.put("donations", donations);
+
+                funds.add(arrData); // places the JSONObject into the JSONArray funds
+                data.put("funds", funds); // places the JSONArray into the JSONObject data
+                obj.put("data", data);
+
+                String jsonString = obj.toJSONString();
+                return jsonString;
+            }
+
+        });
+        Organization org = dm.attemptLogin("test", "test");
+        assertNull(org);
     }
 }

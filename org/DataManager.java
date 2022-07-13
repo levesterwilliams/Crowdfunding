@@ -90,7 +90,6 @@ public class DataManager {
     public String getContributorName(String id) {
 
         try {
-
             Map<String, Object> map = new HashMap<>();
             map.put("id", id);
             String response = client.makeRequest("/findContributorNameById", map);
@@ -104,7 +103,6 @@ public class DataManager {
                 return name;
             } else
                 return null;
-
         } catch (Exception e) {
             return null;
         }
