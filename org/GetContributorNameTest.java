@@ -58,4 +58,20 @@ public class GetContributorNameTest {
         });
         assertNull(dm.getContributorName("0200"));
     }
+
+    /**
+     * Tests DataManager.getContributorName() with bad JSONObject.
+     */
+    @Test
+    public void testBadJSON() {
+        DataManager dm = new DataManager(new WebClient("localhost", 3001) {
+
+            @Override
+            public String makeRequest(String resource, Map<String, Object> queryParams) {
+                return "badstring";
+            }
+
+        });
+        assertNull(dm.getContributorName("0200"));
+    }
 }

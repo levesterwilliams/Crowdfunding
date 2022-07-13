@@ -75,6 +75,7 @@ public class AttemptLoginTest {
         assertEquals(700000, funds.get(0).getTarget());
         List<Donation> donations = funds.get(0).getDonations();
         assertEquals("0200", donations.get(0).getFundId());
+        assertNull(donations.get(0).getContributorName());
         assertEquals(250, donations.get(0).getAmount());
         assertEquals("July 1st, 2001", donations.get(0).getDate());
     }
@@ -83,7 +84,7 @@ public class AttemptLoginTest {
      * Tests DataManager.attemptLogin() with successful login.
      */
     @Test
-    public void testUnSuccessfulLogin() {
+    public void testUnsuccessfulLogin() {
 
         DataManager dm = new DataManager(new WebClient("localhost", 3001) {
 
@@ -121,6 +122,23 @@ public class AttemptLoginTest {
 
                 String jsonString = obj.toJSONString();
                 return jsonString;
+            }
+
+        });
+        Organization org = dm.attemptLogin("test", "test");
+        assertNull(org);
+    }
+
+    /**
+     * Tests DataManager.attemptLogin() with bad JSONObject.
+     */
+    @Test
+    public void testBadJSON() {
+        DataManager dm = new DataManager(new WebClient("localhost", 3001) {
+
+            @Override
+            public String makeRequest(String resource, Map<String, Object> queryParams) {
+                return "badstring";
             }
 
         });
