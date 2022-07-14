@@ -1,6 +1,10 @@
 import java.util.List;
 import java.util.Scanner;
 
+//Test 1.8
+import java.text.SimpleDateFormat;  
+import java.util.Date; 
+
 public class UserInterface {
 
     private DataManager dataManager;
@@ -76,20 +80,30 @@ public class UserInterface {
 
         List<Donation> donations = fund.getDonations();
         System.out.println("Number of donations: " + donations.size());
+        
+        //Task 1.8
+	      SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+	      SimpleDateFormat targetFormat = new SimpleDateFormat("MMMM dd, yyyy");
+        
         for (Donation donation : donations) {
-            System.out.println("* " + donation.getContributorName() + ": $" + donation.getAmount()
-                    + " on " + donation.getDate());
-
-            donations_sum = donations_sum + donation.getAmount();
+            
+        //Task 1.8
+			  Date date = originalFormat.parse(donation.getDate());
+		    String formattedDate = targetFormat.format(date);
+        	
+        	System.out.println("* " + donation.getContributorName() + ": $" + donation.getAmount()
+                    + " ontest1 " + formattedDate);
+            
+        //Task 1.3
+			  donations_sum = donations_sum + donation.getAmount();
         }
-
-        // Task 1.3
-        donations_percent = donations_sum * 100 / fund.getTarget();
-
-        // Task 1.3
-        System.out.println("Total donation amount: $" + donations_sum + " (" + donations_percent
-                + "% of target)");
-
+        
+        //Task 1.3
+      	donations_percent = donations_sum * 100/ fund.getTarget();
+      		
+      	//Task 1.3 
+      	System.out.println("Total donation amount: $" + donations_sum + " (" + donations_percent + "% of target)");
+        
         System.out.println("Press the Enter key to go back to the listing of funds");
         in.nextLine();
 
