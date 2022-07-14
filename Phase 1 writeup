@@ -12,7 +12,7 @@
 To edit/view/delete/add organizations and contributions from the browser, 
 make sure to navigate to the admin folder and run the admin.js to launch port 3000, then open the webApp.
 Otherwise, you can access an organization to view or add funds from from the console. To do this, 
-navigate to the org folder and run api.js to lauch port 3001. We changed the login and password variables 
+navigate to the admin folder and run api.js to lauch port 3001. We changed the login and password variables 
 in the Main() function from "test" and "test" to "args[0]" and "args[1]", respectively. 
 You can either add the login and password of your organization as command line arguments when you run the file, 
 or you can add your login and password as runtime variables in the run configurations of UserInterface.java.
