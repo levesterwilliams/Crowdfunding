@@ -1,6 +1,10 @@
 import java.util.List;
 import java.util.Scanner;
 
+//Test 1.8
+import java.text.SimpleDateFormat;  
+import java.util.Date; 
+
 public class UserInterface {
 
     private DataManager dataManager;
@@ -60,10 +64,10 @@ public class UserInterface {
 
     public void displayFund(int fundNumber) {
         
-        //Task 1.3 test
+        //Task 1.3
     	long donations_sum = 0;
-    	long donations_percent = 0;
-        
+    	long donations_percent = 0; 
+    	
         Fund fund = org.getFunds().get(fundNumber - 1);
 
         System.out.println("\n\n");
@@ -74,11 +78,21 @@ public class UserInterface {
 
         List<Donation> donations = fund.getDonations();
         System.out.println("Number of donations: " + donations.size());
+        
+        //Task 1.8
+	    SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+	    SimpleDateFormat targetFormat = new SimpleDateFormat("MMMM dd, yyyy");
+        
         for (Donation donation : donations) {
-            System.out.println("* " + donation.getContributorName() + ": $" + donation.getAmount()
-                    + " on " + donation.getDate());
             
-            //Task 1.3 test
+        	//Task 1.8
+			Date date = originalFormat.parse(donation.getDate());
+		    String formattedDate = targetFormat.format(date);
+        	
+        	System.out.println("* " + donation.getContributorName() + ": $" + donation.getAmount()
+                    + " ontest1 " + formattedDate);
+            
+            //Task 1.3
 			donations_sum = donations_sum + donation.getAmount();
         }
         
