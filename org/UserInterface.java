@@ -1,9 +1,10 @@
-import java.util.List;
-import java.util.Scanner;
 
 //Test 1.8
-import java.text.SimpleDateFormat;  
-import java.util.Date; 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Scanner;
 
 public class UserInterface {
 
@@ -80,30 +81,36 @@ public class UserInterface {
 
         List<Donation> donations = fund.getDonations();
         System.out.println("Number of donations: " + donations.size());
-        
-        //Task 1.8
-	      SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-	      SimpleDateFormat targetFormat = new SimpleDateFormat("MMMM dd, yyyy");
-        
+
+        // Task 1.8
+        SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        SimpleDateFormat targetFormat = new SimpleDateFormat("MMMM dd, yyyy");
+
         for (Donation donation : donations) {
-            
-        //Task 1.8
-			  Date date = originalFormat.parse(donation.getDate());
-		    String formattedDate = targetFormat.format(date);
-        	
-        	System.out.println("* " + donation.getContributorName() + ": $" + donation.getAmount()
-                    + " ontest1 " + formattedDate);
-            
-        //Task 1.3
-			  donations_sum = donations_sum + donation.getAmount();
+
+            // Task 1.8
+            Date date;
+            try {
+                date = originalFormat.parse(donation.getDate());
+                String formattedDate = targetFormat.format(date);
+                System.out.println("* " + donation.getContributorName() + ": $"
+                        + donation.getAmount() + " on " + formattedDate);
+            } catch (ParseException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            // Task 1.3
+            donations_sum = donations_sum + donation.getAmount();
         }
-        
-        //Task 1.3
-      	donations_percent = donations_sum * 100/ fund.getTarget();
-      		
-      	//Task 1.3 
-      	System.out.println("Total donation amount: $" + donations_sum + " (" + donations_percent + "% of target)");
-        
+
+        // Task 1.3
+        donations_percent = donations_sum * 100 / fund.getTarget();
+
+        // Task 1.3
+        System.out.println("Total donation amount: $" + donations_sum + " (" + donations_percent
+                + "% of target)");
+
         System.out.println("Press the Enter key to go back to the listing of funds");
         in.nextLine();
 
@@ -113,8 +120,8 @@ public class UserInterface {
 
         DataManager ds = new DataManager(new WebClient("localhost", 3001));
 
-        String login = "test";
-        String password = "test";
+        String login = args[0];
+        String password = args[1];
 
         Organization org = ds.attemptLogin(login, password);
 
