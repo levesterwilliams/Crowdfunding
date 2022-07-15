@@ -97,6 +97,7 @@ public class UserInterface {
         long donations_sum = 0;
         long donations_percent = 0;
 
+
         Fund fund = org.getFunds().get(fundNumber - 1);
 
         System.out.println("\n\n");
@@ -136,6 +137,7 @@ public class UserInterface {
         // Task 1.3
         System.out.println("Total donation amount: $" + donations_sum + " (" + donations_percent
                 + "% of target)");
+
 
         System.out.println("Press the Enter key to go back to the listing of funds");
         in.nextLine();
