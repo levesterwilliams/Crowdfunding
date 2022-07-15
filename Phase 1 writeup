@@ -1,0 +1,76 @@
+/**********************************************************************
+ *  Group 4 - PHASE 1 Write up
+ *
+ *  GROUP MEMBERS:
+ *    - Levester Williams
+ *    - Lily Simmons
+ *    - Abby Wank                                                 
+/**********************************************************************/
+
+* INSTRUCTIONS TO START APP
+
+To edit/view/delete/add organizations and contributions from the browser, 
+make sure to navigate to the admin folder and run the admin.js to launch port 3000, then open the webApp.
+Otherwise, you can access an organization to view or add funds from from the console. To do this, 
+navigate to the admin folder and run api.js to lauch port 3001. We changed the login and password variables 
+in the Main() function from "test" and "test" to "args[0]" and "args[1]", respectively. 
+You can either add the login and password of your organization as command line arguments when you run the file, 
+or you can add your login and password as runtime variables in the run configurations of UserInterface.java.
+To start the app, run UserInterface.java.  
+
+**********************************************************************
+
+* REQUIRED tasks to grade:
+Task 1.1
+Task 1.2
+Task 1.3
+
+* OPTIONAL tasks to grade:
+Task 1.7
+Task 1.8
+
+**********************************************************************
+
+* WHO WORKED ON WHAT:
+Task 1.1 - Levester
+Task 1.2 - Levester
+Task 1.3 - Abby
+Task 1.7 - Lily
+Task 1.8 - Abby
+Write Up - Lily
+Live Code Review - Lily, Levester, & Abby
+
+**********************************************************************
+
+* TEAM MEMBER CONTRIBUTION DESCRIPTIONS *
+
+* Task 1.1: We added test cases in DataManager_createFund_test and created test classes
+ 			to test DataManager.attemptLogin() and DataManager.getConrtibutorName() methods in
+ 			AttemptLoginTest.java and GetContributorNameTest.java, respectively to receive 100%
+ 			satement coverage for DataManger.java.
+ 			 
+* Task 1.2: BUG: In the createFund method in the UserInterface class, the JSONObject.get() with the key, 
+			“descrption”, passed within the first if-statement was misspelled: we changed it to “description”.
+			 No other obvious bugs were found. Tests currently pass with 100% coverage.
+			 
+* Task 1.3:  In the displayFund method in the UserInterface class we initialized two new local long variables donations_sum and donations_percent to 0. 
+			 Within the for loop we added the donation amount to the donations sum. 
+			 After the for loop we multiplied the donation sum * 100 / target sum to calculate the donations_percent. 
+			 Finally we created a new line of code to print the donations_sum and donations_percent.
+
+* Task 1.7: There are three checks of error handling in the start() function. 
+			An error will be thrown if 1) the user enters a number less than 0, 
+			2) the user enters a number greater than the current fund list, and 
+			3) the user doesn’t enter a number at all, e.g. a letter, which will throw an InputMismatchException. 
+			In all three cases, the user is prompted to re-enter until the input is valid. 
+			If the user passes all three checks, then a valid input is sent to the displayFund() function. 
+			We added one error input check to createFund(). The user must enter a number when asked for a target amount, 
+			otherwise it will prompt the user to re-enter until they enter a number.
+
+* Task 1.8: In the displayFund method in the UserInterface class, 
+			we imported two new packages: java.util.Date, java.util.List. 
+			We then used the SimpleDateFormat class to create two new SimpleDateFormat objects, originalFormat and targetFormat. 
+			We then updated the existing print statement to print targetFormat, 
+			instead of the unformatted date that was originally present in that statement.
+
+**********************************************************************
