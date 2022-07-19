@@ -10,10 +10,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 public class DataManager {
+    private Map<String, String> cache;
 
     private final WebClient client;
 
     public DataManager(WebClient client) {
+        this.cache = new HashMap<>();
         this.client = client;
     }
 
@@ -59,7 +61,12 @@ public class DataManager {
                     while (it2.hasNext()) {
                         JSONObject donation = (JSONObject) it2.next();
                         String contributorId = (String) donation.get("contributor");
-                        String contributorName = this.getContributorName(contributorId);
+                        String contributorName = "";
+                        if (cache.containsKey(contributorId)) {
+                            contributorName = cache.get(contributorId);
+                        } else {
+                            contributorName = this.getContributorName(contributorId);
+                        }
                         long amount = (Long) donation.get("amount");
                         String date = (String) donation.get("date");
                         donationList.add(new Donation(fundId, contributorName, amount, date));
@@ -82,7 +89,7 @@ public class DataManager {
 
     /**
      * Look up the name of the contributor with the specified ID. This method uses
-     * the /findContributorNameById endpoint in the API.
+     * the in the API.
      * 
      * @return the name of the contributor on success; null if no contributor is
      *         found
@@ -100,6 +107,7 @@ public class DataManager {
 
             if (status.equals("success")) {
                 String name = (String) json.get("data");
+                cache.put(id, name);
                 return name;
             } else
                 return null;
