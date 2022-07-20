@@ -15,7 +15,7 @@ public class DataManager {
     private final WebClient client;
 
     public DataManager(WebClient client) {
-        illegalStateNullChecker(client, "Client could not be found. Please try again.");
+        illegalStateNullChecker(client);
         this.cache = new HashMap<>();
         this.client = client;
     }
@@ -27,9 +27,9 @@ public class DataManager {
      * @param e   The object to be checked for null
      * @throws IllegaStateException - if e is null.
      */
-    private <E> void illegalStateNullChecker(E e, String errMessage) {
+    private <E> void illegalStateNullChecker(E e) {
         if (e == null) {
-            throw new IllegalStateException(errMessage);
+            throw new IllegalStateException();
         }
     }
 
@@ -37,12 +37,11 @@ public class DataManager {
      * Checks to see if e is null and throw an IllegalArgumentException if so.
      * 
      * @param key
-     * @param errMessage
      * @throws IllegalArgumentException - if key is null.
      */
-    private <E> void illegalArgumentNullChecker(E e, String errMessage) {
+    private <E> void illegalArgumentNullChecker(E e) {
         if (e == null) {
-            throw new IllegalArgumentException(errMessage);
+            throw new IllegalArgumentException();
         }
     }
 
@@ -50,12 +49,11 @@ public class DataManager {
      * Checks to see if key equals "error" and throws IllegalStateException if so.
      * 
      * @param key
-     * @param errMessage
      * @throws IllegalStateException - if key equals error.
      */
-    private void jsonErrorChecker(String key, String errMessage) {
+    private void jsonErrorChecker(String key) {
         if (key.equals("error")) {
-            throw new IllegalStateException(errMessage);
+            throw new IllegalStateException();
         }
     }
 
@@ -67,8 +65,8 @@ public class DataManager {
      */
     public Organization attemptLogin(String login, String password) {
 
-        illegalArgumentNullChecker(login, "No login or password entered. Please try again.");
-        illegalArgumentNullChecker(password, "No login or password entered. Please try again.");
+        illegalArgumentNullChecker(login);
+        illegalArgumentNullChecker(password);
 
         Map<String, Object> map = new HashMap<>();
         map.put("login", login);
@@ -80,10 +78,10 @@ public class DataManager {
         try {
             json = (JSONObject) parser.parse(response);
         } catch (Exception e) {
-            throw new IllegalStateException("Error in connecting to server. Please try again.");
+            throw new IllegalStateException();
         }
         String status = (String) json.get("status");
-        jsonErrorChecker(status, "An unexpected database error occurred. Please try again.");
+        jsonErrorChecker(status);
         if (status.equals("success")) {
             JSONObject data = (JSONObject) json.get("data");
             String fundId = (String) data.get("_id");
@@ -124,10 +122,10 @@ public class DataManager {
                 org.addFund(newFund);
 
             }
-
             return org;
-        } else
+        } else {
             return null;
+        }
 
     }
 
@@ -140,7 +138,7 @@ public class DataManager {
      */
     public String getContributorName(String id) {
 
-        illegalArgumentNullChecker(id, "No id found. Please try again.");
+        illegalArgumentNullChecker(id);
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
         String response = client.makeRequest("/findContributorNameById", map);
@@ -149,10 +147,10 @@ public class DataManager {
         try {
             json = (JSONObject) parser.parse(response);
         } catch (Exception e) {
-            throw new IllegalStateException("Error in connecting to server. Please try again.");
+            throw new IllegalStateException();
         }
         String status = (String) json.get("status");
-        jsonErrorChecker(status, "An unexpected database error occurred. Please try again.");
+        jsonErrorChecker(status);
         if (status.equals("success")) {
             String name = "";
             if (cache.containsKey(id)) {
@@ -162,8 +160,9 @@ public class DataManager {
                 cache.put(id, name);
             }
             return name;
-        } else
+        } else {
             return null;
+        }
     }
 
     /**
@@ -174,10 +173,9 @@ public class DataManager {
      */
     public Fund createFund(String orgId, String name, String description, long target) {
 
-        illegalArgumentNullChecker(orgId, "No organization id has been entered. Please try again.");
-        illegalArgumentNullChecker(name, "No name has been entered. Please try again.");
-        illegalArgumentNullChecker(description,
-                "No description has been entered. Please try again.");
+        illegalArgumentNullChecker(orgId);
+        illegalArgumentNullChecker(name);
+        illegalArgumentNullChecker(description);
         Map<String, Object> map = new HashMap<>();
         map.put("orgId", orgId);
         map.put("name", name);
@@ -189,15 +187,16 @@ public class DataManager {
         try {
             json = (JSONObject) parser.parse(response);
         } catch (Exception e) {
-            throw new IllegalStateException("Error in connecting to server. Please try again.");
+            throw new IllegalStateException();
         }
         String status = (String) json.get("status");
-        jsonErrorChecker(status, "An unexpected database error occurred. Please try again.");
+        jsonErrorChecker(status);
         if (status.equals("success")) {
             JSONObject fund = (JSONObject) json.get("data");
             String fundId = (String) fund.get("_id");
             return new Fund(fundId, name, description, target);
-        } else
+        } else {
             return null;
+        }
     }
 }
