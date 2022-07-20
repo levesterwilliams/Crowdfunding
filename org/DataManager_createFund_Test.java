@@ -60,21 +60,4 @@ public class DataManager_createFund_Test {
         Fund f = dm.createFund("12345", "new fund", "this is the new fund", 10000);
         assertNull(f);
     }
-
-    /**
-     * Tests DataManager.createFund() with bad JSONObject.
-     */
-    @Test
-    public void testBadJSON() {
-        DataManager dm = new DataManager(new WebClient("localhost", 3001) {
-
-            @Override
-            public String makeRequest(String resource, Map<String, Object> queryParams) {
-                return "badstring";
-            }
-
-        });
-        assertNull(dm.createFund("12345", "new fund", "this is the new fund", 10000));
-    }
-
 }
