@@ -255,43 +255,74 @@ public class UserInterface {
         main(StringArray);
     }
     
-    //Updated for Task 2.8
+    /**
+     * Initializes a DataManager object with a new WebClient at localhost port 3001
+     * only if no errors occur and asks the user to retry the initialization if any
+     * errors occurs.
+     * 
+     * @param firstin Scanner object
+     * @return DataManager ds
+     */
+    private static DataManager initializeDataManager(Scanner firstin) {
+        DataManager ds = null;
+        boolean connectedToServer = false;
+        while (!connectedToServer) {
+            try {
+                ds = new DataManager(new WebClient("localhost", 3001));
+                connectedToServer = true;
+            } catch (Exception e) {
+                System.out.println(
+                        "Error in performing HTTP request. Do you want to try again? Type 'y' for yes or enter another key to discontinue.");
+                String input = firstin.nextLine().toLowerCase();
+                if (!input.equals("y")) {
+                    System.out.println("Goodbye!");
+                    break;
+                }
+            }
+        }
+        return ds;
+    }
+    // Updated for Task 2.8
     public static void main(String[] args) {
-        
         Scanner firstin = new Scanner(System.in);
-
-        DataManager ds = new DataManager(new WebClient("localhost", 3001));
-
+        DataManager ds = initializeDataManager(firstin);
         String login = null;
         String password = null;
         Organization org = null;
-        
-        if (args.length == 2 ) {
+        if (args.length == 2) {
             login = args[0];
             password = args[1];
         }
-        
-        while (org == null) {
+        while (org == null && ds != null) {
             if (login == null || password == null) {
                 System.out.println("Please enter your username and password to begin.");
             } else {
-                org = ds.attemptLogin(login, password);
+                try {
+                    org = ds.attemptLogin(login, password);
+                } catch (Exception e) {
+                    System.out.println(
+                            "Error in retrieving and parsing data. Do you want to try again? Type 'y' for yes or enter another key to discontinue.");
+                    String input = firstin.nextLine().toLowerCase();
+                    if (!input.equals("y")) {
+                        System.out.println("Goodbye!");
+                        break;
+                    }
+                }
             }
-            
             if (org == null) {
                 if (login != null && password != null) {
-                    System.out.println("Error logging in. Please reenter your username and password.");
+                    System.out.println("Please reenter your username and password.");
                 }
                 String usernamePassword[] = login(firstin);
                 login = usernamePassword[0];
                 password = usernamePassword[1];
             }
         }
-
-        UserInterface ui = new UserInterface(ds, org);
-
-        ui.start();
-
+        if (org != null) {
+            UserInterface ui = new UserInterface(ds, org);
+            ui.start();
+        }
+        firstin.close();
     }
 
 }
