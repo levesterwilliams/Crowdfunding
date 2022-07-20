@@ -154,8 +154,13 @@ public class DataManager {
         String status = (String) json.get("status");
         jsonErrorChecker(status, "An unexpected database error occurred. Please try again.");
         if (status.equals("success")) {
-            String name = (String) json.get("data");
-            cache.put(id, name);
+            String name = "";
+            if (cache.containsKey(id)) {
+                name = cache.get(id);
+            } else {
+                name = (String) json.get("data");
+                cache.put(id, name);
+            }
             return name;
         } else
             return null;
@@ -169,7 +174,6 @@ public class DataManager {
      */
     public Fund createFund(String orgId, String name, String description, long target) {
 
-        illegalStateNullChecker(client, "Client could not be found. Please try again.");
         illegalArgumentNullChecker(orgId, "No organization id has been entered. Please try again.");
         illegalArgumentNullChecker(name, "No name has been entered. Please try again.");
         illegalArgumentNullChecker(description,
