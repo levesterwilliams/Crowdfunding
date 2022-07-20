@@ -1,10 +1,12 @@
-
-//Test 1.8
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -12,7 +14,8 @@ public class UserInterface {
     private DataManager dataManager;
     private Organization org;
     private Scanner in = new Scanner(System.in);
-
+    private Map<Fund, List<AggregateDonationLine>> cachedAggregateDonations = new HashMap<Fund, List<AggregateDonationLine>>();
+    
     public UserInterface(DataManager dataManager, Organization org) {
         this.dataManager = dataManager;
         this.org = org;
@@ -36,6 +39,7 @@ public class UserInterface {
                 System.out.println("\nEnter the fund number to see more information.");
             }
             System.out.println("Enter 0 to create a new fund");
+            System.out.println("Enter -1 to logout");
             //Task 1.7 input error handling
             int option = 0;
             boolean isInteger = false;
@@ -53,12 +57,15 @@ public class UserInterface {
             if (option == 0) {
                 createFund();
               //Task 1.7  checks if input is less than 0
-            } else if (option < 0) {
-                System.out.println(option + " is an invalid input. Please enter number greater than 0");
+            } else if (option == -1) {
+                logout();
+                break;
+            } else if (option < -1) {
+                System.out.println(option + " is an invalid input. Please enter valid number");
               //Task 1.7  checks input does not exceed size of fund list
-            } else if (option > org.getFunds().size() && option != 0) {
+            } else if (option > org.getFunds().size()) {
                 System.out.println(option
-                        + " is an invalid input. Please enter 0 to create a new fund, or choose from list of funds.");
+                        + " is an invalid input. Please enter 0 to create a new fund, -1 to logout, or choose from list of funds.");
             } else {
                 displayFund(option);
             }
@@ -138,30 +145,153 @@ public class UserInterface {
         System.out.println("Total donation amount: $" + donations_sum + " (" + donations_percent
                 + "% of target)");
 
+        System.out.println("To view donations aggregated by contributor, type C"); //Task 2.3
+        System.out.println("Press any other key to go back to the listing of funds");
+        String finalInput = in.nextLine();
+        
+        //Task 2.3
+        if (finalInput.length() == 1) {
+        	if (finalInput.charAt(0) == 'c' || finalInput.charAt(0) == 'C') {
+	            displayAggregatedDonations(fund);
+	            System.out.println("Press any key to go back to the listing of funds");
+	            in.nextLine();
+        	}
+        }
+        
+    }
+    
+    //Task 2.3 
+    public void displayAggregatedDonations(Fund fund) {
+        
+        if (!cachedAggregateDonations.containsKey(fund)) {
+            
+            Map<String, AggregateDonationLine> donationMap = new HashMap<String, AggregateDonationLine>();
+            List<Donation> donations = fund.getDonations();
+            
+            for (Donation donation : donations) {
+                if (donationMap.containsKey(donation.getContributorName())) {
+                    AggregateDonationLine updatedLine = donationMap.get(donation.getContributorName());
+                    updatedLine.addDonation(donation.getAmount());
+                    donationMap.put(donation.getContributorName(), updatedLine);
+                } else {
+                    AggregateDonationLine newLine = new AggregateDonationLine(donation.getContributorName(), donation.getAmount());
+                    donationMap.put(donation.getContributorName(), newLine);
+                }
+            }
+            
+            List<AggregateDonationLine> donationLines = new ArrayList<AggregateDonationLine>(donationMap.values());
+            Collections.sort(donationLines);
+            cachedAggregateDonations.put(fund, donationLines);
+            
+        }
+        
+        List<AggregateDonationLine> donationLines = cachedAggregateDonations.get(fund);
 
-        System.out.println("Press the Enter key to go back to the listing of funds");
-        in.nextLine();
+        for (AggregateDonationLine line : donationLines) {
+            System.out.println(line.getName() + ", " + line.getDonationCount() + " donations, $" + line.getDonationSum() + " total");
+        }
+    }
+    
+    //Task 2.3
+    public class AggregateDonationLine implements Comparable<AggregateDonationLine> {
 
+        private String contributorName;
+        private long donationSum;
+        private int donationCount;
+
+        // constructor, getters, setters
+        
+        public AggregateDonationLine(String contributorName, long donationSum) {
+            this.contributorName = contributorName;
+            this.donationSum = donationSum;
+            this.donationCount = 1;
+        }
+        
+        public long getDonationSum() {
+            return this.donationSum;
+        }
+        
+        public String getName() {
+            return this.contributorName;
+        }
+        
+        public int getDonationCount() {
+            return this.donationCount;
+        }
+        
+        public void addDonation(long donation) {
+            this.donationSum += donation;
+            this.donationCount += 1;
+        }
+
+        // override equals and hashCode
+        @Override
+        public int compareTo(AggregateDonationLine employee) {
+            return (int) (employee.getDonationSum() - this.donationSum);
+        }
     }
 
+    //Task 2.8
+    public static String[] login(Scanner scanner) {
+        
+        String usernamePassword[] = new String[2];
+        
+        System.out.print("Username: ");
+        usernamePassword[0] = scanner.nextLine().trim();
+        System.out.print("Password: ");
+        usernamePassword[1] = scanner.nextLine().trim();
+    
+        System.out.println();
+        
+        return usernamePassword;
+        
+    }
+    
+    //Task 2.8
+    public void logout() {
+        System.out.println("You logged out!");
+        System.out.println();
+        String StringArray[] = new String[2];
+        main(StringArray);
+    }
+    
+    //Updated for Task 2.8
     public static void main(String[] args) {
+        
+        Scanner firstin = new Scanner(System.in);
 
         DataManager ds = new DataManager(new WebClient("localhost", 3001));
 
-        String login = args[0];
-        String password = args[1];
-
-        Organization org = ds.attemptLogin(login, password);
-
-        if (org == null) {
-            System.out.println("Login failed.");
-        } else {
-
-            UserInterface ui = new UserInterface(ds, org);
-
-            ui.start();
-
+        String login = null;
+        String password = null;
+        Organization org = null;
+        
+        if (args.length == 2 ) {
+            login = args[0];
+            password = args[1];
         }
+        
+        while (org == null) {
+            if (login == null || password == null) {
+                System.out.println("Please enter your username and password to begin.");
+            } else {
+                org = ds.attemptLogin(login, password);
+            }
+            
+            if (org == null) {
+                if (login != null && password != null) {
+                    System.out.println("Error logging in. Please reenter your username and password.");
+                }
+                String usernamePassword[] = login(firstin);
+                login = usernamePassword[0];
+                password = usernamePassword[1];
+            }
+        }
+
+        UserInterface ui = new UserInterface(ds, org);
+
+        ui.start();
+
     }
 
 }
