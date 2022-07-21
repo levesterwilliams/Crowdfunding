@@ -188,7 +188,7 @@ public class UserInterface {
             } else if ((delete.equals("no") || delete.equals("n"))) {
                 System.out.println("");
             }
-            System.out.println("Press the Enter key to go back to the listing of funds");
+            System.out.println("Press the Enter key to go back to the listing of funds.");
             in.nextLine();
 
         }
@@ -272,7 +272,6 @@ public class UserInterface {
 
     // task 2.7
     public void deleteFund(Fund fund) {
-        // System.out.println("test to get inside deleteFund");
         String id = fund.getId();
         boolean dm = dataManager.deleteFund(id);
         org.getFunds().remove(fund);
