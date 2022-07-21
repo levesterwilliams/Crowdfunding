@@ -36,5 +36,9 @@ public class Organization {
 		funds.add(fund);
 	}
 	
+ //added this Task 2.7
+ public void deleteFund(Fund fund) {
+     funds.remove(fund);
+    }
 
 }
