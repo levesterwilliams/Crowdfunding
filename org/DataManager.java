@@ -75,8 +75,10 @@ public class DataManager {
 
         JSONParser parser = new JSONParser();
         JSONObject json;
+        
         try {
             json = (JSONObject) parser.parse(response);
+            System.out.println(json);
         } catch (Exception e) {
             throw new IllegalStateException();
         }
@@ -197,6 +199,41 @@ public class DataManager {
             return new Fund(fundId, name, description, target);
         } else {
             return null;
+        }
+    }
+    
+    //Task 2.7
+    /**
+     * This method deletes a new fund in the database using the /deleteFund endpoint
+     * in the API
+     * 
+     * @return true if successful; false if unsuccessful
+     */
+    public boolean deleteFund(String id) {
+        //defensive programming
+        if (id == null) {
+            throw new IllegalArgumentException();
+        }
+        
+        try {
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", id);
+           
+            String response = client.makeRequest("/deleteFund", map);
+
+            JSONParser parser = new JSONParser();
+            JSONObject json = (JSONObject) parser.parse(response);
+            String status = (String) json.get("status");
+
+            if (status.equals("success")) {
+                return true; //status came back correct
+            } else
+                return false; //did not work
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
     }
 }

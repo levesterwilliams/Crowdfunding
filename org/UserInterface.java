@@ -142,19 +142,56 @@ public class UserInterface {
 
         // Task 1.3
         System.out.println("Total donation amount: $" + donations_sum + " (" + donations_percent
-                + "% of target)");
+                + "% of target\n)");
 
-        System.out.println("To view donations aggregated by contributor, type C"); // Task 2.3
-        System.out.println("Press any other key to go back to the listing of funds");
+        // Task 2.3
+        System.out.println("To view donations aggregated by contributor, type C");
+        // Task 2.7
+        System.out.println("Press 9 to delete this fund.");
+        System.out.println("Otherwise, press enter to go back to the listing of funds");
+        //System.out.println("Press any other key to go back to the listing of funds");
         String finalInput = in.nextLine();
 
         // Task 2.3
-        if (finalInput.length() == 1) {
+        //if (finalInput.length() == 1) {
             if (finalInput.charAt(0) == 'c' || finalInput.charAt(0) == 'C') {
                 displayAggregatedDonations(fund);
                 System.out.println("Press any key to go back to the listing of funds");
                 in.nextLine();
+            //}
+        }
+        
+        // Task 2.7
+
+        //String input = in.nextLine();
+
+            else if (finalInput.equals("9")) {
+            System.out.println("Are you sure you want to delete this fund? Enter y/n");
+            String delete = in.nextLine();
+            delete = delete.replaceAll("[^A-za-z]+", "");
+            delete = delete.toLowerCase();
+
+            while (!((delete.equals("yes") || delete.equals("y") || delete.equals("no")
+                    || delete.equals("n")))) {
+
+                System.out.println("Please enter y/n.");
+                delete = in.nextLine();
+                delete = delete.replaceAll("[^A-za-z]+", "");
+                delete = delete.toLowerCase();
             }
+
+            // if yes, delete fund
+            if (delete.equals("yes") || delete.equals("y")) {
+                //pass this fund to delete fund
+                deleteFund(fund);
+                
+            } else if ((delete.equals("no") || delete.equals("n"))) { 
+                System.out.println("");
+            } 
+        System.out.println("Press the Enter key to go back to the listing of funds");
+        in.nextLine();
+            
+    
         }
 
     }
@@ -234,6 +271,19 @@ public class UserInterface {
         }
     }
 
+    //task 2.7
+    public void deleteFund(Fund fund) {
+       // System.out.println("test to get inside deleteFund");
+        String id = fund.getId();
+        boolean dm = dataManager.deleteFund(id);
+        org.getFunds().remove(fund);
+        if(dm == false) {
+           System.out.println("Something went wrong " + fund.getName() + " was not deleted.");
+        }
+        System.out.println(fund.getName() + " has been successfully deleted.\n");
+    }
+    
+    
     // Task 2.8
     public static String[] login(Scanner scanner) {
 
@@ -285,6 +335,7 @@ public class UserInterface {
         }
         return ds;
     }
+    
 
     // Updated for Task 2.8
     public static void main(String[] args) {
