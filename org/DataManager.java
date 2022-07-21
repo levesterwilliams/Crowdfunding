@@ -78,7 +78,7 @@ public class DataManager {
         
         try {
             json = (JSONObject) parser.parse(response);
-            System.out.println(json);
+            //System.out.println(json);
         } catch (Exception e) {
             throw new IllegalStateException();
         }
@@ -210,30 +210,21 @@ public class DataManager {
      * @return true if successful; false if unsuccessful
      */
     public boolean deleteFund(String id) {
-        //defensive programming
-        if (id == null) {
-            throw new IllegalArgumentException();
-        }
-        
+        illegalArgumentNullChecker(id);
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        String response = client.makeRequest("/deleteFund", map);
+        JSONParser parser = new JSONParser();
+        JSONObject json;
         try {
-
-            Map<String, Object> map = new HashMap<>();
-            map.put("id", id);
-           
-            String response = client.makeRequest("/deleteFund", map);
-
-            JSONParser parser = new JSONParser();
-            JSONObject json = (JSONObject) parser.parse(response);
-            String status = (String) json.get("status");
-
-            if (status.equals("success")) {
-                return true; //status came back correct
-            } else
-                return false; //did not work
-
+            json = (JSONObject) parser.parse(response);
         } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            throw new IllegalStateException();
         }
+        String status = (String) json.get("status");
+        if (status.equals("success")) {
+            return true; // status came back correct
+        } else
+            return false; // did not work
     }
 }
