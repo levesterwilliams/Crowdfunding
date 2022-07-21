@@ -41,6 +41,19 @@ public class DataManager_deleteFund_Test {
         dm.deleteFund(fund.getId());
 
     }
+    
+    // test if JSON object is malformed - illegal state exception
+    @Test(expected = IllegalStateException.class)
+    public void testBadJSONString() {
+        Fund fund = new Fund("203", "New Fund", "This is new", 10000);
+        DataManager dm = new DataManager(new WebClient("localhost", 3001) {
+            @Override
+            public String makeRequest(String resource, Map<String, Object> queryParams) {
+                return "badJSONstring";
+            }
+        });
+        dm.deleteFund(fund.getId());
+    }
 
     //TESTS THE UI- DOES NOT WORK. NOT SURE IF WE NEED THIS TEST.
 //    @Test
