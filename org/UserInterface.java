@@ -99,7 +99,7 @@ public class UserInterface {
     public void displayFund(int fundNumber) {
 
         // Task_1.8
-        // Task 1.3 test
+        // Task 1.3
 
         long donations_sum = 0;
         long donations_percent = 0;
