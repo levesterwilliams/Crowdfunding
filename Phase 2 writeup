@@ -65,7 +65,16 @@ Live Code Review - Lily, Levester, & Abby
       that sorts by donationSum. We then put this sorted list into a map with the fund as the key in order to cache the data for future use.
       Finally, we printed the contributor name, donationCount, and donationSum.
 
-* Task 2.7: 
+* Task 2.7: There was a three step process to implement task 2.7. First, was to modify the displayFund() function to prompt the user to choose whether they want to delete the fund “press 9”.  
+            It then asks the user to confirm whether they want to confirm deletion “y/n”.  There is error handling so if the user must follow through with the confirmation, i.e. they must press yes or no.  
+            If they decide not to delete, they can choose to go back to the list of funds.  If they do decide to delete, the new “deleteFund(fund)” method in UserInterface is executed.
+            We deliberately implemented this method inside of displayFund() to take advantage of the funds position number in the funds constructor’s linked-list, so we only have to pass the fund itself to the UI deleteFund(fund) method.
+            Inside the UI deleteFund(fund), we retrieve the fund’s id and pass it to a new method in DataManager, deleteFund(id), that removes the fund from the database.  
+            The deleteFund(id) is a boolean method that will return true if the fund was successfully removed, and false if something went wrong.
+            Finally, the UI deleteFund(fund) method removes the fund from the Fund constructor linked-list with a new method inside Organzation.java, funds.remove(fund);
+            Additionally, there is a new jUnit test case for the DataManager’s new deleteFund(id) method called “DataManager_deleteFund_Test.java”. 
+            These tests make sure the boolean functionality of the deleteFund(id) works, and a defensive programming test to make sure that the fund id is not null, and another to make sure the json string is not malformed.
+
 
 * Task 2.8: We created two new methods called login and logout in the UserInterface.java file and updated the main method.
       In the main method, we added logic so that if the user does not pass command line inputs, it nevertheless allows them to login.
