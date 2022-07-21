@@ -326,7 +326,7 @@ public class UserInterface {
         }
         while (org == null && ds != null) {
             if (login == null || password == null) {
-                System.out.println("Please enter your username and password to begin.");
+                System.out.println("Please enter your username and password.");
             } else {
                 try {
                     org = ds.attemptLogin(login, password);
