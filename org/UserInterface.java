@@ -142,13 +142,13 @@ public class UserInterface {
 
         // Task 1.3
         System.out.println("Total donation amount: $" + donations_sum + " (" + donations_percent
-                + "% of target\n)");
+                + "% of target)\n");
 
         // Task 2.3
-        System.out.println("To view donations aggregated by contributor, type C");
+        System.out.println("To view donations aggregated by contributor, type C.");
         // Task 2.7
-        System.out.println("Press 9 to delete this fund.");
-        System.out.println("Otherwise, press enter to go back to the listing of funds");
+        System.out.println("To delete this fund, type 9.");
+        System.out.println("Otherwise, press enter to go back to the listing of funds.");
         // System.out.println("Press any other key to go back to the listing of funds");
         String finalInput = in.nextLine();
 
@@ -156,7 +156,7 @@ public class UserInterface {
         if (finalInput.length() == 1) {
             if (finalInput.charAt(0) == 'c' || finalInput.charAt(0) == 'C') {
                 displayAggregatedDonations(fund);
-                System.out.println("Press any key to go back to the listing of funds");
+                System.out.println("Press any key to go back to the listing of funds.");
                 in.nextLine();
             }
         }
