@@ -40,10 +40,8 @@ public class UserInterface {
             }
             System.out.println("Enter 0 to create a new fund");
             System.out.println("Enter -1 to logout");
-            // Task 1.7 input error handling
             int option = 0;
             boolean isInteger = false;
-            // Task 1.7 checks user input is an integer
             while (!isInteger) {
                 try {
                     option = in.nextInt();
@@ -56,13 +54,11 @@ public class UserInterface {
             in.nextLine();
             if (option == 0) {
                 createFund();
-                // Task 1.7 checks if input is less than 0
             } else if (option == -1) {
                 logout();
                 break;
             } else if (option < -1) {
                 System.out.println(option + " is an invalid input. Please enter valid number");
-                // Task 1.7 checks input does not exceed size of fund list
             } else if (option > org.getFunds().size()) {
                 System.out.println(option
                         + " is an invalid input. Please enter 0 to create a new fund, -1 to logout, or choose from list of funds.");
@@ -84,7 +80,6 @@ public class UserInterface {
         System.out.print("Enter the fund target: ");
         String input = in.nextLine();
 
-        // Task 1.7 checks that fund target is a number
         while (!input.matches("\\d+")) {
             System.out.println("Please enter a number.");
             input = in.nextLine();
@@ -97,9 +92,6 @@ public class UserInterface {
     }
 
     public void displayFund(int fundNumber) {
-
-        // Task_1.8
-        // Task 1.3
 
         long donations_sum = 0;
         long donations_percent = 0;
@@ -114,14 +106,11 @@ public class UserInterface {
 
         List<Donation> donations = fund.getDonations();
         System.out.println("Number of donations: " + donations.size());
-
-        // Task 1.8
         SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         SimpleDateFormat targetFormat = new SimpleDateFormat("MMMM dd, yyyy");
 
         for (Donation donation : donations) {
 
-            // Task 1.8
             Date date;
             try {
                 date = originalFormat.parse(donation.getDate());
@@ -129,18 +118,14 @@ public class UserInterface {
                 System.out.println("* " + donation.getContributorName() + ": $"
                         + donation.getAmount() + " on " + formattedDate);
             } catch (ParseException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
-            // Task 1.3
             donations_sum = donations_sum + donation.getAmount();
         }
 
-        // Task 1.3
         donations_percent = donations_sum * 100 / fund.getTarget();
 
-        // Task 1.3
         System.out.println("Total donation amount: $" + donations_sum + " (" + donations_percent
                 + "% of target)\n");
 
@@ -149,7 +134,6 @@ public class UserInterface {
         // Task 2.7
         System.out.println("To delete this fund, type 9.");
         System.out.println("Otherwise, press enter to go back to the listing of funds.");
-        // System.out.println("Press any other key to go back to the listing of funds");
         String finalInput = in.nextLine();
 
         // Task 2.3
@@ -162,9 +146,6 @@ public class UserInterface {
         }
 
         // Task 2.7
-
-        // String input = in.nextLine();
-
         if (finalInput.equals("9")) {
             System.out.println("Are you sure you want to delete this fund? Enter y/n");
             String delete = in.nextLine();
@@ -294,7 +275,6 @@ public class UserInterface {
         System.out.println();
 
         return usernamePassword;
-
     }
 
     // Task 2.8
@@ -333,7 +313,7 @@ public class UserInterface {
         return ds;
     }
 
-    // Updated for Task 2.8
+    // Updated for Task 2.2 & 2.8
     public static void main(String[] args) {
         Scanner firstin = new Scanner(System.in);
         DataManager ds = initializeDataManager(firstin);
