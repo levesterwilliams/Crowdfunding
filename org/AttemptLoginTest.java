@@ -127,21 +127,4 @@ public class AttemptLoginTest {
         Organization org = dm.attemptLogin("info@aclu.org", "_mi3!dst55");
         assertNull(org);
     }
-
-    /**
-     * Tests DataManager.attemptLogin() with bad JSONObject.
-     */
-    @Test
-    public void testBadJSON() {
-        DataManager dm = new DataManager(new WebClient("localhost", 3001) {
-
-            @Override
-            public String makeRequest(String resource, Map<String, Object> queryParams) {
-                return "badstring";
-            }
-
-        });
-        Organization org = dm.attemptLogin("info@aclu.org", "_mi3!dst55");
-        assertNull(org);
-    }
 }
