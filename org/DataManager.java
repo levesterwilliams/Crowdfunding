@@ -97,9 +97,7 @@ public class DataManager {
                 name = (String) fund.get("name");
                 description = (String) fund.get("description");
                 long target = (Long) fund.get("target");
-
                 Fund newFund = new Fund(fundId, name, description, target);
-
                 JSONArray donations = (JSONArray) fund.get("donations");
                 List<Donation> donationList = new LinkedList<>();
                 Iterator it2 = donations.iterator();
@@ -116,17 +114,13 @@ public class DataManager {
                     String date = (String) donation.get("date");
                     donationList.add(new Donation(fundId, contributorName, amount, date));
                 }
-
                 newFund.setDonations(donationList);
-
                 org.addFund(newFund);
-
             }
             return org;
         } else {
             return null;
         }
-
     }
 
     /**
@@ -198,5 +192,30 @@ public class DataManager {
         } else {
             return null;
         }
+    }
+
+    /**
+     * This method deletes a new fund in the database using the /deleteFund endpoint
+     * in the API
+     * 
+     * @return true if successful; false if unsuccessful
+     */
+    public boolean deleteFund(String id) {
+        illegalArgumentNullChecker(id);
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        String response = client.makeRequest("/deleteFund", map);
+        JSONParser parser = new JSONParser();
+        JSONObject json;
+        try {
+            json = (JSONObject) parser.parse(response);
+        } catch (Exception e) {
+            throw new IllegalStateException();
+        }
+        String status = (String) json.get("status");
+        if (status.equals("success")) {
+            return true; // status came back correct
+        } else
+            return false; // did not work
     }
 }
