@@ -142,14 +142,11 @@ public class UserInterface {
         System.out.println("Total donation amount: $" + donations_sum + " (" + donations_percent
                 + "% of target)\n");
 
-        // Task 2.3
         System.out.println("To view donations aggregated by contributor, type C.");
-        // Task 2.7
         System.out.println("To delete this fund, type 9.");
         System.out.println("Otherwise, press enter to go back to the listing of funds.");
         String finalInput = in.nextLine();
 
-        // Task 2.3
         if (finalInput.length() == 1) {
             if (finalInput.charAt(0) == 'c' || finalInput.charAt(0) == 'C') {
                 displayAggregatedDonations(fund);
@@ -158,7 +155,6 @@ public class UserInterface {
             }
         }
 
-        // Task 2.7
         if (finalInput.equals("9")) {
             System.out.println("Are you sure you want to delete this fund? Enter y/n");
             String delete = in.nextLine();
@@ -189,7 +185,6 @@ public class UserInterface {
 
     }
 
-    // Task 2.3
     public void displayAggregatedDonations(Fund fund) {
 
         if (!cachedAggregateDonations.containsKey(fund)) {
@@ -225,7 +220,6 @@ public class UserInterface {
         }
     }
 
-    // Task 2.3
     public class AggregateDonationLine implements Comparable<AggregateDonationLine> {
 
         private String contributorName;
@@ -264,7 +258,6 @@ public class UserInterface {
         }
     }
 
-    // task 2.7
     public void deleteFund(Fund fund) {
         String id = fund.getId();
         boolean dm = false;
@@ -290,7 +283,6 @@ public class UserInterface {
 
     }
 
-    // Task 2.8
     public static String[] login(Scanner scanner) {
 
         String usernamePassword[] = new String[2];
@@ -341,7 +333,6 @@ public class UserInterface {
         return ds;
     }
 
-    // Updated for Task 2.2 & 2.8
     public static void main(String[] args) {
         Scanner firstin = new Scanner(System.in);
         DataManager ds = initializeDataManager(firstin);
@@ -379,12 +370,7 @@ public class UserInterface {
         }
         if (org != null) {
             UserInterface ui = new UserInterface(ds, org);
-            try {
-                ui.start();
-            } catch (Exception e) {
-
-            }
-
+            ui.start();
         }
         firstin.close();
     }
