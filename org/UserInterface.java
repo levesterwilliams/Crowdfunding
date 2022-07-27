@@ -85,9 +85,22 @@ public class UserInterface {
             input = in.nextLine();
         }
         long target = Integer.parseInt(input);
+        Fund fund;
 
-        Fund fund = dataManager.createFund(org.getId(), name, description, target);
-        org.getFunds().add(fund);
+        while (true) {
+            try {
+                fund = dataManager.createFund(org.getId(), name, description, target);
+                org.getFunds().add(fund);
+                break;
+            } catch (Exception e) {
+                System.out.println(
+                        "The fund cannot be created. Do you want to try again? Type 'y' for yes or enter another key to discontinue.");
+                input = in.nextLine().toLowerCase();
+                if (!input.equals("y")) {
+                    break;
+                }
+            }
+        }
 
     }
 
@@ -254,12 +267,27 @@ public class UserInterface {
     // task 2.7
     public void deleteFund(Fund fund) {
         String id = fund.getId();
-        boolean dm = dataManager.deleteFund(id);
-        org.getFunds().remove(fund);
-        if (dm == false) {
-            System.out.println("Something went wrong " + fund.getName() + " was not deleted.");
+        boolean dm = false;
+        while (true) {
+            try {
+                dm = dataManager.deleteFund(id);
+                org.getFunds().remove(fund);
+                break;
+            } catch (Exception e) {
+                System.out.println(
+                        "The fund cannot be deleted. Do you want to try again? Type 'y' for yes or enter another key to discontinue.");
+                String input = in.nextLine().toLowerCase();
+                if (!input.equals("y")) {
+                    break;
+                }
+            }
         }
-        System.out.println(fund.getName() + " has been successfully deleted.\n");
+        if (dm == false) {
+            System.out.println("Something went wrong. " + fund.getName() + " was not deleted.");
+        } else {
+            System.out.println(fund.getName() + " has been successfully deleted.\n");
+        }
+
     }
 
     // Task 2.8
@@ -351,7 +379,12 @@ public class UserInterface {
         }
         if (org != null) {
             UserInterface ui = new UserInterface(ds, org);
-            ui.start();
+            try {
+                ui.start();
+            } catch (Exception e) {
+
+            }
+
         }
         firstin.close();
     }
