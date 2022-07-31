@@ -125,6 +125,29 @@ app.use('/updateOrg', (req, res) => {
 	
     });
 
+/*
+Handle the form submission to update an org's password
+*/
+app.use('/updateOrgPassword', (req, res) => {
+
+	var filter = {"_id" : req.body.id };
+
+	var update = { "password" : req.body.password };
+	
+	var action = { "$set" : update };
+
+	Organization.findOneAndUpdate( filter, action, { new : true }, (err, result) => {
+		if (err) {
+		    res.render("error", { 'error' : err });
+		}
+		else {
+		    //console.log(result);
+		    res.render("viewOrg", {"org" : result , 'status' : 'Successfully updated Organization Password'});
+		}
+	    });
+	
+    });
+
 
 /*
 Delete the org with ID specified as req.query.id

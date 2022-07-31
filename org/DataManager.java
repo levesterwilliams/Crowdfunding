@@ -218,4 +218,34 @@ public class DataManager {
         } else
             return false; // did not work
     }
+
+    /**
+     * Updates the password of Organization.
+     * 
+     * @param login    The login for Organization.
+     * @param password The updated password for Organization.
+     * @return true if request is successful; otherwise, return false
+     */
+    public boolean updatePassword(String id, String password) {
+
+        illegalArgumentNullChecker(id);
+        illegalArgumentNullChecker(password);
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        map.put("password", password);
+        String response = client.makeRequest("/updateOrgPassword", map);
+        JSONParser parser = new JSONParser();
+        JSONObject json;
+        try {
+            json = (JSONObject) parser.parse(response);
+        } catch (Exception e) {
+            throw new IllegalStateException();
+        }
+        String status = (String) json.get("status");
+        if (status.equals("success")) {
+            return true;
+        } else
+            return false;
+
+    }
 }
