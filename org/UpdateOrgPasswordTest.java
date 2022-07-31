@@ -9,6 +9,7 @@ import org.junit.Test;
 
 public class UpdateOrgPasswordTest {
 
+    // Delete maybe
     private class MockDataManager extends DataManager {
 
         protected Organization org;
@@ -27,10 +28,10 @@ public class UpdateOrgPasswordTest {
             Organization org = new Organization("12345", "newOrg", "awesome");
             Fund fund = new Fund("54321", "Seeds All Day", "A fund for seeds", 500);
             org.addFund(fund);
-            org.setPassword(password);
+            // org.setPassword(password);
             this.org = org;
             Organization copy = new Organization(org.getId(), org.getName(), org.getDescription());
-            copy.setPassword(org.getPassword());
+            // copy.setPassword(org.getPassword());
             List<Fund> funds = org.getFunds();
             for (Fund soleFund : funds) {
                 copy.addFund(new Fund(soleFund.getId(), soleFund.getName(),
@@ -44,7 +45,7 @@ public class UpdateOrgPasswordTest {
     @Test
     public void testSuccessfulUpdatePassword() {
 
-        MockDataManager dm = new MockDataManager(new WebClient("localhost", 3001) {
+        DataManager dm = new DataManager(new WebClient("localhost", 3001) {
             @Override
             public String makeRequest(String resource, Map<String, Object> queryParams) {
                 // creates the JSONObject for entire request
@@ -60,7 +61,7 @@ public class UpdateOrgPasswordTest {
     @Test
     public void testUnSuccessfulUpdatePassword() {
 
-        MockDataManager dm = new MockDataManager(new WebClient("localhost", 3001) {
+        DataManager dm = new DataManager(new WebClient("localhost", 3001) {
             @Override
             public String makeRequest(String resource, Map<String, Object> queryParams) {
                 // creates the JSONObject for entire request
@@ -71,6 +72,51 @@ public class UpdateOrgPasswordTest {
             }
         });
         assertFalse(dm.updatePassword("12345", "new password"));
+    }
+
+    /**
+     * Tests null as argument for login
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testNullLogin() {
+
+        DataManager dm = new DataManager(new WebClient("localhost", 3001) {
+            @Override
+            public String makeRequest(String resource, Map<String, Object> queryParams) {
+                return "{\"status\":\"fail\"}";
+            }
+        });
+        dm.updatePassword(null, "new password");
+    }
+
+    /**
+     * Tests null as argument for the password.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testNullPassword() {
+
+        DataManager dm = new DataManager(new WebClient("localhost", 3001) {
+            @Override
+            public String makeRequest(String resource, Map<String, Object> queryParams) {
+                return "{\"status\":\"fail\"}";
+            }
+        });
+        dm.updatePassword("hello", null);
+    }
+
+    /**
+     * Tests malformed JSON string.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testBadJsonSTring() {
+
+        DataManager dm = new DataManager(new WebClient("localhost", 3001) {
+            @Override
+            public String makeRequest(String resource, Map<String, Object> queryParams) {
+                return "bad string";
+            }
+        });
+        dm.updatePassword("hello", "password");
     }
 
 }

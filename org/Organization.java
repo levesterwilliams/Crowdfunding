@@ -6,6 +6,10 @@ public class Organization {
     private String id;
     private String name;
     private String description;
+    /**
+     * Adds a password
+     */
+    private String password;
 
     private List<Fund> funds;
 
@@ -38,5 +42,13 @@ public class Organization {
 
     public void deleteFund(Fund fund) {
         funds.remove(fund);
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

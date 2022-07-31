@@ -227,7 +227,6 @@ public class DataManager {
      * @return true if request is successful; otherwise, return false
      */
     public boolean updatePassword(String id, String password) {
-
         illegalArgumentNullChecker(id);
         illegalArgumentNullChecker(password);
         Map<String, Object> map = new HashMap<>();
@@ -246,6 +245,5 @@ public class DataManager {
             return true;
         } else
             return false;
-
     }
 }
