@@ -33,8 +33,6 @@ app.use('/findOrgByLoginAndPassword', (req, res) => {
 Handle the form submission to update an org's password
 */
 app.use('/updateOrgPassword', (req, res) => {
-	console.log("Request is here!!!!!!!!!!!!!!!!!!!!!!");
-	console.log(req);
 	var filter = {"_id" : req.query.id };
 
 	var update = { "password" : req.query.password };

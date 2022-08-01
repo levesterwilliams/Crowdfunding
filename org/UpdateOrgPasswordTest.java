@@ -1,5 +1,6 @@
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Map;
 
@@ -83,6 +84,57 @@ public class UpdateOrgPasswordTest {
             }
         });
         dm.updatePassword("hello", "password");
+    }
+
+    /**
+     * Tests for null WebClient passed to the DataManager class.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testUpdateOrgPassword_WebClientIsNull() {
+        DataManager dm = new DataManager(null);
+        dm.updatePassword("login", "password");
+        fail("DataManager.updatePassword does not throw IllegalStateException when WebClient is null");
+    }
+
+    /**
+     * Tests for wrong port passed to WebClient.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testUpdateOrgPassword_WebClientCannotConnectToServer() {
+        // this assumes no server is running on port 3002
+        DataManager dm = new DataManager(new WebClient("localhost", 3002));
+        dm.updatePassword("login", "password");
+        fail("DataManager.updatePassword does not throw IllegalStateException when WebClient cannot connect to server");
+    }
+
+    /**
+     * Tests for exception thrown when WebClient returns a null response.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testUpdateOrgPassword_WebClientReturnsNull() {
+
+        DataManager dm = new DataManager(new WebClient("localhost", 3001) {
+            @Override
+            public String makeRequest(String resource, Map<String, Object> queryParams) {
+                return null;
+            }
+        });
+        dm.updatePassword("login", "password");
+        fail("DataManager.updatePassword does not throw IllegalStateException when WebClient returns null");
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void testAttemptLogin_WebClientReturnsError() {
+
+        DataManager dm = new DataManager(new WebClient("localhost", 3001) {
+            @Override
+            public String makeRequest(String resource, Map<String, Object> queryParams) {
+                return "{\"status\":\"error\"data\":\"An unexpected database error occurred\"}";
+            }
+        });
+        dm.updatePassword("login", "password");
+        fail("DataManager.updatePassword does not throw IllegalStateException when WebClient returns error");
+
     }
 
 }
