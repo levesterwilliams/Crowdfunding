@@ -38,13 +38,9 @@ public class UserInterface {
                 }
                 System.out.println("\nEnter the fund number to see more information.");
             }
-            System.out.println("Enter 0 to create a new fund");
-            System.out.println("Enter -1 to logout");
-            /**
-             * System.out.println("Enter -2 to change the password"); prompt user to change
-             * password goes here
-             */
-            System.out.println("Enter -2 to change the password");
+            System.out.println("Enter 0 to create a new fund.");
+            System.out.println("Enter -1 to logout.");
+            System.out.println("Enter -2 to change the password.");
             int option = 0;
             boolean isInteger = false;
             while (!isInteger) {
@@ -62,18 +58,12 @@ public class UserInterface {
             } else if (option == -1) {
                 logout();
                 break;
-                /**
-                 * Add another else if statement to choose the option to change password
-                 */
             } else if (option == -2) {
                 if (updatePassword()) {
                     System.out.println("Password successfully updated!");
                 } else {
                     System.out.println("Password was not updated.");
                 }
-                /**
-                 * change below to option < -2
-                 */
             } else if (option < -2) {
                 System.out.println(option + " is an invalid input. Please enter valid number");
             } else if (option > org.getFunds().size()) {
@@ -314,7 +304,6 @@ public class UserInterface {
         return usernamePassword;
     }
 
-    // Task 2.8
     public void logout() {
         System.out.println("You logged out!");
         System.out.println();
@@ -363,6 +352,7 @@ public class UserInterface {
         String usernamePassword = in.nextLine().trim();
         String currentPassword = org.getPassword();
         if (!currentPassword.equals(usernamePassword)) {
+            System.out.println("Wrong password entered.");
             return false;
         } else {
             System.out.print("Please enter your new password:");
@@ -370,11 +360,10 @@ public class UserInterface {
             System.out.print("Please enter your new password again:");
             String checkNewPassword = in.nextLine().trim();
             if (!newPassword.equals(checkNewPassword)) {
+                System.out.println("Inputs do not match.");
                 return false;
             } else {
                 try {
-                    // DELETE ME!!!
-                    System.out.println("Org id is: " + org.getId());
                     if (dataManager.updatePassword(org.getId(), newPassword)) {
                         org.setPassword(newPassword);
                         return true;
