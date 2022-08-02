@@ -57,6 +57,7 @@ public class DataManager {
         }
     }
 
+
     /**
      * Attempt to log the user into an Organization account using the login and
      * password. This method uses the /findOrgByLoginAndPassword endpoint in the API
@@ -67,6 +68,7 @@ public class DataManager {
 
         illegalArgumentNullChecker(login);
         illegalArgumentNullChecker(password);
+
 
         Map<String, Object> map = new HashMap<>();
         map.put("login", login);
@@ -219,6 +221,23 @@ public class DataManager {
             return false; // did not work
     }
 
+    
+    /**
+     * This method updates an organization using /updateOrg
+     * in the API
+     * Task 3.3
+     * @return true if successful; false if unsuccessful
+     */
+    public boolean updateOrgName(String id, String name, String description) {
+        illegalArgumentNullChecker(id);
+        illegalArgumentNullChecker(name);
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        map.put("name", name);
+        map.put("description", description);
+        String response = client.makeRequest("/updateOrgName", map);
+
+
     /**
      * Updates the password of Organization.
      * 
@@ -233,6 +252,7 @@ public class DataManager {
         map.put("id", id);
         map.put("password", password);
         String response = client.makeRequest("/updateOrgPassword", map);
+
         JSONParser parser = new JSONParser();
         JSONObject json;
         try {
@@ -246,4 +266,7 @@ public class DataManager {
         } else
             return false;
     }
+
+    
+
 }

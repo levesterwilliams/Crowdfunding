@@ -16,6 +16,9 @@ public class UserInterface {
     private Scanner in = new Scanner(System.in);
     private Map<Fund, List<AggregateDonationLine>> cachedAggregateDonations = new HashMap<Fund, List<AggregateDonationLine>>();
 
+    private static String orgLogin; //track for 3.3
+
+
     public UserInterface(DataManager dataManager, Organization org) {
         this.dataManager = dataManager;
         this.org = org;
@@ -38,9 +41,12 @@ public class UserInterface {
                 }
                 System.out.println("\nEnter the fund number to see more information.");
             }
-            System.out.println("Enter 0 to create a new fund.");
-            System.out.println("Enter -1 to logout.");
+
+            System.out.println("Enter 0 to create a new fund");
+            System.out.println("Enter -1 to logout");
             System.out.println("Enter -2 to change the password.");
+            System.out.println("Enter -3 to change the org name and description");
+
             int option = 0;
             boolean isInteger = false;
             while (!isInteger) {
@@ -58,13 +64,15 @@ public class UserInterface {
             } else if (option == -1) {
                 logout();
                 break;
+            } else if (option == -3) {
+                updateNameDesc();
             } else if (option == -2) {
                 if (updatePassword()) {
                     System.out.println("Password successfully updated!");
                 } else {
                     System.out.println("Password was not updated.");
                 }
-            } else if (option < -2) {
+            } else if (option < -3) {
                 System.out.println(option + " is an invalid input. Please enter valid number");
             } else if (option > org.getFunds().size()) {
                 System.out.println(option
@@ -74,6 +82,48 @@ public class UserInterface {
             }
         }
 
+    }
+    // task 3.3
+    public void updateNameDesc() {
+        System.out.println("Please retype your password to continue:");
+        String password = in.nextLine().trim();
+        if (checkPassword(password)) {
+            System.out.println("Thank you for confirming your password.");
+            //Edit Org Name
+            System.out.println("The current Organization Name is: " + org.getName());
+            System.out.println("To leave as is, press Enter. Otherwise, type a new Organization Name Below:");
+            String newOrgName = in.nextLine().trim();
+            if (newOrgName.length() == 0) {
+                System.out.println("The Organization Name will be left as is.");
+                newOrgName = org.getName();
+            } else {
+                System.out.println("The Organization Name will be changed to: " + newOrgName);
+            }
+            //Edit Org Description
+            System.out.println("The current Organization Description is: " + org.getDescription());
+            System.out.println("To leave as is, press Enter. Otherwise, type a new Organization Description Below:");
+            String newOrgDescription = in.nextLine().trim();
+            if (newOrgDescription.length() == 0) {
+                System.out.println("The Organization Description will be left as is.");
+                newOrgDescription = org.getDescription();
+            } else {
+                System.out.println("The Organization Description will be changed to: " + newOrgDescription);
+            }
+            //Update Database and close
+            try {
+                dataManager.updateOrgName(org.getId(), newOrgName, newOrgDescription);
+                System.out.println("Database updated successfully");
+                org = dataManager.attemptLogin(orgLogin, password); //this is to refresh the data
+            } catch (Exception e) {
+                System.out.println("Error updating database");
+            }
+            System.out.println("Press any key to go back to main menu.");
+            in.nextLine();
+        } else {
+            System.out.println("Password incorrect. Press any key to go back to the main menu.");
+            in.nextLine();
+        }
+      
     }
 
     public void createFund() {
@@ -109,6 +159,18 @@ public class UserInterface {
             }
         }
 
+    }
+     
+    // task 3.3
+    public boolean checkPassword(String password) {
+        
+        Organization tempOrg = dataManager.attemptLogin(orgLogin, password);
+        if (tempOrg == null) {
+            return false;
+        } else {
+            return true;
+        }
+        
     }
 
     public void displayFund(int fundNumber) {
@@ -150,6 +212,9 @@ public class UserInterface {
                 + "% of target)\n");
 
         System.out.println("To view donations aggregated by contributor, type C.");
+
+        System.out.println("To edit the organization's account information, type E."); //Task 3.3
+
         System.out.println("To delete this fund, type 9.");
         System.out.println("Otherwise, press enter to go back to the listing of funds.");
         String finalInput = in.nextLine();
@@ -159,7 +224,9 @@ public class UserInterface {
                 displayAggregatedDonations(fund);
                 System.out.println("Press any key to go back to the listing of funds.");
                 in.nextLine();
-            }
+
+            }            
+
         }
 
         if (finalInput.equals("9")) {
@@ -167,6 +234,7 @@ public class UserInterface {
             String delete = in.nextLine();
             delete = delete.replaceAll("[^A-za-z]+", "");
             delete = delete.toLowerCase();
+
 
             while (!((delete.equals("yes") || delete.equals("y") || delete.equals("no")
                     || delete.equals("n")))) {
@@ -187,12 +255,12 @@ public class UserInterface {
             }
             System.out.println("Press the Enter key to go back to the listing of funds.");
             in.nextLine();
-
         }
 
     }
 
     public void displayAggregatedDonations(Fund fund) {
+
 
         if (!cachedAggregateDonations.containsKey(fund)) {
 
@@ -304,6 +372,9 @@ public class UserInterface {
         return usernamePassword;
     }
 
+
+    // Task 2.8
+
     public void logout() {
         System.out.println("You logged out!");
         System.out.println();
@@ -338,6 +409,7 @@ public class UserInterface {
         }
         return ds;
     }
+
 
     /**
      * Returns true only if the user correctly enters the current password once and
@@ -379,11 +451,13 @@ public class UserInterface {
         }
     }
 
+
     public static void main(String[] args) {
         Scanner firstin = new Scanner(System.in);
         DataManager ds = initializeDataManager(firstin);
         String login = null;
         String password = null;
+
 
         Organization org = null;
         if (args.length == 2) {
@@ -416,7 +490,11 @@ public class UserInterface {
             }
         }
         if (org != null) {
+
+            orgLogin = login;
+
             org.setPassword(password);
+
             UserInterface ui = new UserInterface(ds, org);
             ui.start();
         }

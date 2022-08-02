@@ -28,9 +28,22 @@ public class Organization {
         return name;
     }
 
+    
+    public String setName(String name) {
+        return this.name = name;
+    }
+
+
+
     public String getDescription() {
         return description;
     }
+
+    
+    public String setDesc(String description) {
+        return this.description = description;
+    }
+
 
     public List<Fund> getFunds() {
         return funds;
@@ -51,4 +64,5 @@ public class Organization {
     public String getPassword() {
         return password;
     }
+
 }
