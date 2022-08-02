@@ -123,6 +123,9 @@ public class UpdateOrgPasswordTest {
         fail("DataManager.updatePassword does not throw IllegalStateException when WebClient returns null");
     }
 
+    /**
+     * Tests error received when making RESTful request.
+     */
     @Test(expected = IllegalStateException.class)
     public void testAttemptLogin_WebClientReturnsError() {
 
@@ -134,7 +137,6 @@ public class UpdateOrgPasswordTest {
         });
         dm.updatePassword("login", "password");
         fail("DataManager.updatePassword does not throw IllegalStateException when WebClient returns error");
-
     }
 
 }
