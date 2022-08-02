@@ -15,7 +15,9 @@ public class UserInterface {
     private Organization org;
     private Scanner in = new Scanner(System.in);
     private Map<Fund, List<AggregateDonationLine>> cachedAggregateDonations = new HashMap<Fund, List<AggregateDonationLine>>();
+
     private static String orgLogin; //track for 3.3
+
 
     public UserInterface(DataManager dataManager, Organization org) {
         this.dataManager = dataManager;
@@ -39,9 +41,12 @@ public class UserInterface {
                 }
                 System.out.println("\nEnter the fund number to see more information.");
             }
+
             System.out.println("Enter 0 to create a new fund");
             System.out.println("Enter -1 to logout");
-            System.out.println("Enter -3 to change the Org Name and Description");
+            System.out.println("Enter -2 to change the password.");
+            System.out.println("Enter -3 to change the org name and description");
+
             int option = 0;
             boolean isInteger = false;
             while (!isInteger) {
@@ -61,6 +66,12 @@ public class UserInterface {
                 break;
             } else if (option == -3) {
                 updateNameDesc();
+            } else if (option == -2) {
+                if (updatePassword()) {
+                    System.out.println("Password successfully updated!");
+                } else {
+                    System.out.println("Password was not updated.");
+                }
             } else if (option < -3) {
                 System.out.println(option + " is an invalid input. Please enter valid number");
             } else if (option > org.getFunds().size()) {
@@ -201,7 +212,9 @@ public class UserInterface {
                 + "% of target)\n");
 
         System.out.println("To view donations aggregated by contributor, type C.");
+
         System.out.println("To edit the organization's account information, type E."); //Task 3.3
+
         System.out.println("To delete this fund, type 9.");
         System.out.println("Otherwise, press enter to go back to the listing of funds.");
         String finalInput = in.nextLine();
@@ -211,7 +224,9 @@ public class UserInterface {
                 displayAggregatedDonations(fund);
                 System.out.println("Press any key to go back to the listing of funds.");
                 in.nextLine();
+
             }            
+
         }
 
         if (finalInput.equals("9")) {
@@ -219,6 +234,7 @@ public class UserInterface {
             String delete = in.nextLine();
             delete = delete.replaceAll("[^A-za-z]+", "");
             delete = delete.toLowerCase();
+
 
             while (!((delete.equals("yes") || delete.equals("y") || delete.equals("no")
                     || delete.equals("n")))) {
@@ -239,12 +255,12 @@ public class UserInterface {
             }
             System.out.println("Press the Enter key to go back to the listing of funds.");
             in.nextLine();
-
         }
 
     }
 
     public void displayAggregatedDonations(Fund fund) {
+
 
         if (!cachedAggregateDonations.containsKey(fund)) {
 
@@ -356,7 +372,9 @@ public class UserInterface {
         return usernamePassword;
     }
 
+
     // Task 2.8
+
     public void logout() {
         System.out.println("You logged out!");
         System.out.println();
@@ -392,11 +410,55 @@ public class UserInterface {
         return ds;
     }
 
+
+    /**
+     * Returns true only if the user correctly enters the current password once and
+     * then enters new password exactly twice in addition to a successful request to
+     * API to update the password.
+     * 
+     * @return @literal <true> if password is successfully updated; otherwise,
+     *         return false.
+     */
+    public boolean updatePassword() {
+        System.out.print("Please enter your current password:");
+        String usernamePassword = in.nextLine().trim();
+        String currentPassword = org.getPassword();
+        if (!currentPassword.equals(usernamePassword)) {
+            System.out.println("Wrong password entered.");
+            return false;
+        } else {
+            System.out.print("Please enter your new password:");
+            String newPassword = in.nextLine().trim();
+            System.out.print("Please enter your new password again:");
+            String checkNewPassword = in.nextLine().trim();
+            if (!newPassword.equals(checkNewPassword)) {
+                System.out.println("Inputs do not match.");
+                return false;
+            } else {
+                try {
+                    if (dataManager.updatePassword(org.getId(), newPassword)) {
+                        org.setPassword(newPassword);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error in updating password.");
+                    return false;
+                }
+            }
+
+        }
+    }
+
+
     public static void main(String[] args) {
         Scanner firstin = new Scanner(System.in);
         DataManager ds = initializeDataManager(firstin);
         String login = null;
         String password = null;
+
+
         Organization org = null;
         if (args.length == 2) {
             login = args[0];
@@ -428,7 +490,11 @@ public class UserInterface {
             }
         }
         if (org != null) {
+
             orgLogin = login;
+
+            org.setPassword(password);
+
             UserInterface ui = new UserInterface(ds, org);
             ui.start();
         }

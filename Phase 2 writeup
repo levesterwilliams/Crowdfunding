@@ -1,0 +1,86 @@
+/**********************************************************************
+ *  Group 4 - PHASE 2 Write up
+ *
+ *  GROUP MEMBERS:
+ *    - Levester Williams
+ *    - Lily Simmons
+ *    - Abby Wank                                                 
+/**********************************************************************/
+
+* REQUIRED tasks to grade:
+Task 2.1
+Task 2.2
+Task 2.3
+
+* OPTIONAL tasks to grade:
+Task 2.7
+Task 2.8
+
+**********************************************************************
+
+* WHO WORKED ON WHAT:
+Task 2.1 - Levester
+Task 2.2 - Levester
+Task 2.3 - Abby
+Task 2.7 - Lily
+Task 2.8 - Abby
+Write Up - Lily
+Live Code Review - Lily, Levester, & Abby
+
+**********************************************************************
+
+* TEAM MEMBER CONTRIBUTION DESCRIPTIONS *
+
+* Task 2.1: For DataManager.java, we added a private Map object called “cache” that has contributor ID, a String, as its key
+      paired with its contributor name, a String. In DataManager. attemptLogin() method, we first check to see if contributor
+      id is already in the cache. If yes, then we retrieve the contributor name from the cache. If not, we use a make request
+      to retrieve the contributor name from the RESTful API. In DataManager.getContributorName() method, we insert into our cache
+      the passed String id as the key and pair it with String name, which is retrieved from the JSON Object.
+
+* Task 2.2: For DataManager.java, we added private methods to check for its public methods’ respective arguments and to throw
+      either IllegalArgumentException or IllegalStateException if true. These methods are called illegalArgumentNullChecker()
+      and illegalStateNullChecker(), respectively. Another private method, jsonErrorChecker(), was added to check if an error
+      arose from accessing the database, which throws an IllegalStateException. These methods were invoked in
+      DataManager.attemptLogin(), DataManager.createFund(), and DataManager.getContributorName(). In the constructor, we checked
+      to see if Webclient client was null.
+      Retroactively, with the permission of the instructor, we had to delete three cases in total within DataManager_createFund_Test,
+      AttemptLoginTest, and GetContributorNameTest to ensure all test cases passed. Those test suites tested for malformed JSON string
+      but were expecting the Organization obj to return null, not throw a specific exception as outlined in DataManagerRobustnesstest.java.
+      Hence, the new test suite along with the revised code in DataManager.java made those few cases obsolete. 
+      In UserInterface.java, we added try/catch statements to ensure all exceptions thrown by DataManager.java are caught in the
+      main method. Then, the user is prompted to either retry the same operation or to discontinue, which effectively ends the program.
+      We added a private method called  initializeDataManager() to initialize the DataManager object that will be invoked later in the main()
+      method only if it is not null, and, thus, had no errors occurred during initialization.
+
+* Task 2.3: We implemented a new method in the UserInterface.java file called displayAggregatedDonations to iterate through the contributors
+      and for each contributor, store the aggregated donation information. To store the aggregated donation information, we created a new
+      class called AggregateDonationLine to store the count of donations (donationCount) and the sum of donations (donationSum).
+      The reason we created this new class was because we wanted to store two values (donationSum and donationCount,
+      effectively creating a tuple) associated with every key (contributor name). If the particular fund had not been cached before,
+      we iterate through each donation and increment donationCount and add the sum to the running sum total donationSum for that contributor.
+      We do this by creating a map with the key as contributor name and an AggregateDonationLine as the value. Using a map allows us
+      to efficiently find the contributor to update the values. After we finish iterating, we convert the map to a list of all the values
+      (the AggregateDonationLine also contains the contributor name, so the keys are duplicative at this point). We then sort the list
+      by donationSum, which is possible because in the AggregateDonationLine class, we created a method to override the compareTo method
+      that sorts by donationSum. We then put this sorted list into a map with the fund as the key in order to cache the data for future use.
+      Finally, we printed the contributor name, donationCount, and donationSum.
+
+* Task 2.7: There was a three step process to implement task 2.7. First, was to modify the displayFund() function to prompt the user to choose whether they want to delete the fund “press 9”.  
+       It then asks the user to confirm whether they want to confirm deletion “y/n”.  There is error handling so if the user must follow through with the confirmation, i.e. they must press yes or no.  
+       If they decide not to delete, they can choose to go back to the list of funds.  If they do decide to delete, the new “deleteFund(fund)” method in UserInterface is executed.
+       We deliberately implemented this method inside of displayFund() to take advantage of the funds position number in the funds constructor’s linked-list, so we only have to pass the fund itself to the UI deleteFund(fund) method.
+       Inside the UI deleteFund(fund), we retrieve the fund’s id and pass it to a new method in DataManager, deleteFund(id), that removes the fund from the database.  
+       The deleteFund(id) is a boolean method that will return true if the fund was successfully removed, and false if something went wrong.
+       Finally, the UI deleteFund(fund) method removes the fund from the Fund constructor linked-list with a new method inside Organzation.java, funds.remove(fund);
+       Additionally, there is a new jUnit test case for the DataManager’s new deleteFund(id) method called “DataManager_deleteFund_Test.java”. 
+       These tests make sure the boolean functionality of the deleteFund(id) works, and a defensive programming test to make sure that the fund id is not null, and another to make sure the json string is not malformed.
+
+
+* Task 2.8: We created two new methods called login and logout in the UserInterface.java file and updated the main method.
+      In the main method, we added logic so that if the user does not pass command line inputs, it nevertheless allows them to login.
+      We then call the login method, where we read in a username and password entered by the user. This method returns an array of strings
+      containing the username and password and feeds it back to the main method. If the username and password is incorrect, it re-calls
+      the login method and allows the user to try to login again. In the logout method, we re-call the main method in order to reset the
+      program and allow the user to login again as if they are opening up the program for the first time.
+
+**********************************************************************

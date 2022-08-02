@@ -56,7 +56,7 @@ public class DataManager {
             throw new IllegalStateException();
         }
     }
-   
+
 
     /**
      * Attempt to log the user into an Organization account using the login and
@@ -68,6 +68,7 @@ public class DataManager {
 
         illegalArgumentNullChecker(login);
         illegalArgumentNullChecker(password);
+
 
         Map<String, Object> map = new HashMap<>();
         map.put("login", login);
@@ -219,6 +220,7 @@ public class DataManager {
         } else
             return false; // did not work
     }
+
     
     /**
      * This method updates an organization using /updateOrg
@@ -234,6 +236,23 @@ public class DataManager {
         map.put("name", name);
         map.put("description", description);
         String response = client.makeRequest("/updateOrgName", map);
+
+
+    /**
+     * Updates the password of Organization.
+     * 
+     * @param login    The login for Organization.
+     * @param password The updated password for Organization.
+     * @return true if request is successful; otherwise, return false
+     */
+    public boolean updatePassword(String id, String password) {
+        illegalArgumentNullChecker(id);
+        illegalArgumentNullChecker(password);
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        map.put("password", password);
+        String response = client.makeRequest("/updateOrgPassword", map);
+
         JSONParser parser = new JSONParser();
         JSONObject json;
         try {
@@ -247,5 +266,7 @@ public class DataManager {
         } else
             return false;
     }
+
     
+
 }
