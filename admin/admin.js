@@ -125,7 +125,6 @@ app.use('/updateOrg', (req, res) => {
 	
     });
 
-
 /*
 Delete the org with ID specified as req.query.id
 */

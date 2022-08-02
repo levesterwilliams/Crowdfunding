@@ -38,8 +38,9 @@ public class UserInterface {
                 }
                 System.out.println("\nEnter the fund number to see more information.");
             }
-            System.out.println("Enter 0 to create a new fund");
-            System.out.println("Enter -1 to logout");
+            System.out.println("Enter 0 to create a new fund.");
+            System.out.println("Enter -1 to logout.");
+            System.out.println("Enter -2 to change the password.");
             int option = 0;
             boolean isInteger = false;
             while (!isInteger) {
@@ -57,7 +58,13 @@ public class UserInterface {
             } else if (option == -1) {
                 logout();
                 break;
-            } else if (option < -1) {
+            } else if (option == -2) {
+                if (updatePassword()) {
+                    System.out.println("Password successfully updated!");
+                } else {
+                    System.out.println("Password was not updated.");
+                }
+            } else if (option < -2) {
                 System.out.println(option + " is an invalid input. Please enter valid number");
             } else if (option > org.getFunds().size()) {
                 System.out.println(option
@@ -297,7 +304,6 @@ public class UserInterface {
         return usernamePassword;
     }
 
-    // Task 2.8
     public void logout() {
         System.out.println("You logged out!");
         System.out.println();
@@ -333,11 +339,52 @@ public class UserInterface {
         return ds;
     }
 
+    /**
+     * Returns true only if the user correctly enters the current password once and
+     * then enters new password exactly twice in addition to a successful request to
+     * API to update the password.
+     * 
+     * @return @literal <true> if password is successfully updated; otherwise,
+     *         return false.
+     */
+    public boolean updatePassword() {
+        System.out.print("Please enter your current password:");
+        String usernamePassword = in.nextLine().trim();
+        String currentPassword = org.getPassword();
+        if (!currentPassword.equals(usernamePassword)) {
+            System.out.println("Wrong password entered.");
+            return false;
+        } else {
+            System.out.print("Please enter your new password:");
+            String newPassword = in.nextLine().trim();
+            System.out.print("Please enter your new password again:");
+            String checkNewPassword = in.nextLine().trim();
+            if (!newPassword.equals(checkNewPassword)) {
+                System.out.println("Inputs do not match.");
+                return false;
+            } else {
+                try {
+                    if (dataManager.updatePassword(org.getId(), newPassword)) {
+                        org.setPassword(newPassword);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error in updating password.");
+                    return false;
+                }
+            }
+
+        }
+    }
+
     public static void main(String[] args) {
         Scanner firstin = new Scanner(System.in);
         DataManager ds = initializeDataManager(firstin);
         String login = null;
         String password = null;
+
         Organization org = null;
         if (args.length == 2) {
             login = args[0];
@@ -369,6 +416,7 @@ public class UserInterface {
             }
         }
         if (org != null) {
+            org.setPassword(password);
             UserInterface ui = new UserInterface(ds, org);
             ui.start();
         }
