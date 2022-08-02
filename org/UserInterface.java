@@ -4,16 +4,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
+
 
 public class UserInterface {
 
     private DataManager dataManager;
     private Organization org;
     private Scanner in = new Scanner(System.in);
+    private static Set<String> orgNames = new HashSet<>();
     private Map<Fund, List<AggregateDonationLine>> cachedAggregateDonations = new HashMap<Fund, List<AggregateDonationLine>>();
 
     public UserInterface(DataManager dataManager, Organization org) {
@@ -22,7 +26,12 @@ public class UserInterface {
     }
 
     public void start() {
-
+        
+        //add name to orgName list
+        orgNames.add(org.getName());
+        System.out.println("orgNames: " + orgNames);
+        
+        
         while (true) {
             System.out.println("\n\n");
             if (org.getFunds().size() > 0) {
@@ -101,6 +110,74 @@ public class UserInterface {
                 }
             }
         }
+
+    }
+    
+
+    //TASK 3.1
+    public static String[] createNewOrganization(Scanner scanner) {
+        
+        String params[] = new String[4];
+        
+        System.out.println("\nLet's make a new organzation!\n");
+        
+        System.out.print("Create new login: ");
+        String login = scanner.nextLine().trim();        
+        while (login.isEmpty() || login.matches("\\s+")) {
+        System.out.print("Login cannot be blank. Please re-enter a login name: ");
+        login = scanner.nextLine().trim();
+        }
+        params[0] = login;
+        
+        System.out.print("Create new password: ");
+        String password = scanner.nextLine().trim();        
+        while (password.isEmpty() || password.matches("\\s+")) {
+        System.out.print("Password cannot be blank. Please re-enter a password: ");
+        password = scanner.nextLine().trim();
+        }
+        params[1] = password;
+        
+        System.out.print("Enter new Organization name: ");
+        String name = scanner.nextLine().trim();        
+        while (name.isEmpty() || name.matches("\\s+")) {
+        System.out.print("Name cannot be blank. Please re-enter an Organization name: ");
+        name = scanner.nextLine().trim();
+        }
+        boolean hasName = false;
+        while(!hasName) {
+            if(!orgNames.contains(name)) {
+            params[2] = name;
+            orgNames.add(name);
+            hasName = true;
+        } else {
+            System.out.println("Sorry, that name is taken. Please enter a new name.");
+            name = scanner.nextLine().trim();
+            while (name.isEmpty() || name.matches("\\s+")) {
+                System.out.print("Name cannot be blank. Please re-enter an Organization name: ");
+                name = scanner.nextLine().trim();
+                }
+            }
+        }
+
+        System.out.println("orgNames: " + orgNames);
+                
+        System.out.print("Enter new Organization description: ");
+        String description = scanner.nextLine().trim();        
+        while (description.isEmpty() || description.matches("\\s+")) {
+        System.out.print("Description cannot be blank. Please re-enter an Organization description: ");
+        description = scanner.nextLine().trim();
+        }
+        params[3] = description;
+
+
+//        System.out.println(params[0]);
+//        System.out.println(params[1]);
+//        System.out.println(params[2]);
+//        System.out.println(params[3]);
+        
+        
+
+        return params;
 
     }
 
@@ -284,17 +361,18 @@ public class UserInterface {
     }
 
     public static String[] login(Scanner scanner) {
-
+        
         String usernamePassword[] = new String[2];
 
-        System.out.print("Username: ");
+        System.out.print("\nUsername: ");
         usernamePassword[0] = scanner.nextLine().trim();
         System.out.print("Password: ");
         usernamePassword[1] = scanner.nextLine().trim();
-
+        
         System.out.println();
 
         return usernamePassword;
+        
     }
 
     // Task 2.8
@@ -333,11 +411,39 @@ public class UserInterface {
         return ds;
     }
 
+    
+//Task 3.1: Organization App new user registration
+    
+// 1.  Modify existing start/main() so that it is possible for a user to start the app without providing login/password credentials, 
+    //and then they have the option of logging in (which would bring them to the existing functionality, assuming successful login) 
+    //or of creating a new organization.  //DONE (I HOPE)
+
+    
+//2. To create a new organization, 
+    //they would need to provide a login name, password, organization name, and organization description, 
+    //which would then be sent to the server using the RESTful API. This would require a change to the API, but you can refer to 
+    //the “/createOrg” endpoint in the Administrator App to get a sense of how to do this. //DONE (I HOPE)
+
+//3.  The Organization App should not allow the user to leave any of the fields blank, //DONE
+    
+    //or to specify a login name that already exists in the database. //DONE -good enough? At least it's handled by UI
+
+//4. If any error occurs, including an error communicating with the RESTful API, //FROM DATA MANAGER?? NEED TRY CATCH?
+    //the app should display a meaningful error message and allow the user to make another attempt to create an organization. //DONE 
+
+//5. If the user successfully creates an organization, they should then be shown the prompt for creating a new fund, 
+    //and the existing functionality should continue from there.  //I THINK THIS IS DONE
+
+    
+    
+    
     public static void main(String[] args) {
         Scanner firstin = new Scanner(System.in);
         DataManager ds = initializeDataManager(firstin);
         String login = null;
         String password = null;
+        String name = null;
+        String description = null;
         Organization org = null;
         if (args.length == 2) {
             login = args[0];
@@ -345,29 +451,79 @@ public class UserInterface {
         }
         while (org == null && ds != null) {
             if (login == null || password == null) {
-                System.out.println("Please enter your username and password.");
-            } else {
-                try {
-                    org = ds.attemptLogin(login, password);
-                } catch (Exception e) {
-                    System.out.println(
-                            "Error in retrieving or parsing data from database. Do you want to try again? Type 'y' for yes or enter another key to discontinue.");
-                    String input = firstin.nextLine().toLowerCase();
-                    if (!input.equals("y")) {
-                        System.out.println("Goodbye!");
-                        break;
-                    }
+                //TASK 3.1
+                System.out.print("Welcome!\n\n Please enter 1 to login, or 0 to register a new organization: ");
+                String initial = firstin.nextLine();
+                
+                //error handling for initial prompt
+                while(!initial.equals("1") || !initial.equals("0")) {
+                    break;
                 }
-            }
-            if (org == null) {
+                
+              //tests first login attempt
+                if (initial.equals("1")) {  
+                    String usernamePassword[] = login(firstin);
+                    login = usernamePassword[0];
+                    password = usernamePassword[1];
+                    try {
+                        org = ds.attemptLogin(login, password);
+                    } catch (Exception e) {
+                        System.out.println(
+                                "Error in retrieving or parsing data from database. Would you like to try again? Type 'y' for yes or enter another key to discontinue.");
+                        String input = firstin.nextLine().toLowerCase();
+                        if (!input.equals("y")) {
+                            System.out.println("Goodbye!");
+                            break;
+                        }
+                    }
+                } else if (initial.equals("0")) {
+                    String newOrgParams[] = createNewOrganization(firstin);
+                    login = newOrgParams[0];
+                    password = newOrgParams[1];
+                    name = newOrgParams[2];
+                    description = newOrgParams[3]; 
+                    //send new org params to dataManager
+                    try {
+                        org = ds.createNewOrg(newOrgParams);
+                    } catch (Exception e){
+                        System.out.println("Database Error. New organization not created. Press any key to try again.");
+                        firstin.nextLine();
+                        //String input = firstin.nextLine().toLowerCase();
+                        String StringArray[] = new String[2];
+                        main(StringArray);
+                        //if (input.equals("y")) {
+                        //System.out.println("Goodbye!");
+
+                            //break;
+                        //}
+                    }    
+                }
+            } 
+            //else {
+//                try {
+//                    org = ds.attemptLogin(login, password);
+//                } catch (Exception e) {
+//                    System.out.println(
+//                            "Error in retrieving or parsing data from database. Do you want to try again? Type 'y' for yes or enter another key to discontinue.");
+//                    String input = firstin.nextLine().toLowerCase();
+//                    if (!input.equals("y")) {
+//                        System.out.println("Goodbye!");
+//                        break;
+//                    }
+//                }
+//            } 
+            //this will run if first login attempt fails
+            else if (org == null) {
                 if (login != null && password != null) {
-                    System.out.println("Please reenter your username and password.");
+                    System.out.println("Login attempt unsuccessful. Please re-enter your username and password.");
                 }
                 String usernamePassword[] = login(firstin);
                 login = usernamePassword[0];
                 password = usernamePassword[1];
+                org = ds.attemptLogin(login, password);
             }
-        }
+            
+        } //IMPORTANT: end of while loop
         if (org != null) {
             UserInterface ui = new UserInterface(ds, org);
             ui.start();

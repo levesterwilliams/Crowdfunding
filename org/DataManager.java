@@ -123,6 +123,61 @@ public class DataManager {
         }
     }
 
+    //task 3.1
+    /**
+     * This method creates a new fund in the database using the /createOrg endpoint
+     * in the API
+     * 
+     * @return a new Organization object if successful; null if unsuccessful
+     */
+
+        public Organization createNewOrg(String[]params) {
+           String login = params[0];
+           String password = params[1];
+           String name = params[2];
+           String description = params[3];
+           List<Fund> funds = new LinkedList<>();
+
+        illegalArgumentNullChecker(name);
+        illegalArgumentNullChecker(description);
+        illegalArgumentNullChecker(login);
+        illegalArgumentNullChecker(password);
+        Map<String, Object> map = new HashMap<>();
+        map.put("login", login);
+        map.put("password", password);
+        map.put("name", name);
+        map.put("description", description);
+        map.put("funds", funds);
+        String response = client.makeRequest("/createOrg", map);
+        JSONParser parser = new JSONParser();
+        JSONObject json;
+        try {
+            json = (JSONObject) parser.parse(response);
+        } catch (Exception e) {
+            throw new IllegalStateException();
+        }
+        String status = (String) json.get("status");
+        jsonErrorChecker(status);
+        if (status.equals("success")) {
+            JSONObject data = (JSONObject) json.get("data");
+            String orgId = (String) data.get("_id");
+            String nameJson = (String) data.get("name");
+            String descriptionJson = (String) data.get("description");
+            System.out.println("\nSuccess! You may add funds now.\n");
+            return new Organization(orgId, nameJson, descriptionJson);
+        } else {
+//            if(status.equals("error")){
+//            JSONObject data = (JSONObject) json.get("data");
+//            String errCode = (String) data.get("code"); 
+//            if(errCode == "11000") {
+//                throw new IllegalStateException("Duplicate key error. Login name already in system. Choose a different login.");
+//                }
+//            }
+            return null;
+            
+            }
+        }
+    
     /**
      * Look up the name of the contributor with the specified ID. This method uses
      * the in the API.
@@ -218,4 +273,6 @@ public class DataManager {
         } else
             return false; // did not work
     }
+
+
 }

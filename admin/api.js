@@ -28,6 +28,32 @@ app.use('/findOrgByLoginAndPassword', (req, res) => {
 		}
 	    });
     });
+    
+//TASK 3.1    
+/*
+Create new organization/ new user registration
+*/
+app.use('/createOrg', (req, res) => {
+
+	var org = new Organization({
+		login: req.query.login,
+		password: req.query.password,
+		name: req.query.name,
+		description: req.query.description,
+		funds: []
+	    });
+
+	org.save( (err) => {
+		if (err) {
+		    res.json({ "status": "error", "data" : err});
+		}
+		else {
+		    //console.log(org);
+		    res.json({ "status": "success", "data" : org});
+		}
+	    });
+
+    });     
 
 /*
 Create a new fund
