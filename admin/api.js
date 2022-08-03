@@ -30,6 +30,8 @@ app.use('/findOrgByLoginAndPassword', (req, res) => {
     });
     
 
+
+
 //TASK 3.1    
 /*
 Create new organization/ new user registration
@@ -45,6 +47,7 @@ app.use('/createOrg', (req, res) => {
 	    });
 
 	org.save( (err) => {
+
   		 if (err) {
 		    res.json({ "status": "error", "data" : err});
 		}
@@ -68,10 +71,12 @@ app.use('/updateOrgPassword', (req, res) => {
 
 	Organization.findOneAndUpdate( filter, action, { new : true }, (err, result) => {
 
+
 		if (err) {
 		    res.json({ "status": "error", "data" : err});
 		}
 		else {
+
 		    //console.log(result);
 		    res.json({ "status": "success", "data" : result});
 		}
