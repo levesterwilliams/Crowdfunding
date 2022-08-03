@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
-
 public class UserInterface {
 
     private DataManager dataManager;
@@ -27,12 +26,11 @@ public class UserInterface {
     }
 
     public void start() {
-        
-        //add name to orgName list
+
+        // add name to orgName list
         orgNames.add(org.getName());
-        //System.out.println("orgNames: " + orgNames);
-        
-        
+        // System.out.println("orgNames: " + orgNames);
+
         while (true) {
             System.out.println("\n\n");
             if (org.getFunds().size() > 0) {
@@ -172,60 +170,58 @@ public class UserInterface {
         }
 
     }
-    
 
-    //TASK 3.1
+    // TASK 3.1
     public static String[] createNewOrganization(Scanner scanner) {
-        
+
         String params[] = new String[4];
-        
+
         System.out.println("\nLet's make a new organzation!\n");
-        
+
         System.out.print("Create new login: ");
-        String login = scanner.nextLine().trim();        
+        String login = scanner.nextLine().trim();
         while (login.isEmpty() || login.matches("\\s+")) {
-        System.out.print("Login cannot be blank. Please re-enter a login name: ");
-        login = scanner.nextLine().trim();
+            System.out.print("Login cannot be blank. Please re-enter a login name: ");
+            login = scanner.nextLine().trim();
         }
         params[0] = login;
-        
+
         System.out.print("Create new password: ");
-        String password = scanner.nextLine().trim();        
+        String password = scanner.nextLine().trim();
         while (password.isEmpty() || password.matches("\\s+")) {
-        System.out.print("Password cannot be blank. Please re-enter a password: ");
-        password = scanner.nextLine().trim();
+            System.out.print("Password cannot be blank. Please re-enter a password: ");
+            password = scanner.nextLine().trim();
         }
         params[1] = password;
-        
+
         System.out.print("Enter new Organization name: ");
-        String name = scanner.nextLine().trim();        
+        String name = scanner.nextLine().trim();
         while (name.isEmpty() || name.matches("\\s+")) {
-        System.out.print("Name cannot be blank. Please re-enter an Organization name: ");
-        name = scanner.nextLine().trim();
+            System.out.print("Name cannot be blank. Please re-enter an Organization name: ");
+            name = scanner.nextLine().trim();
         }
         boolean hasName = false;
-        while(!hasName) {
-            if(!orgNames.contains(name)) {
-            params[2] = name;
-            orgNames.add(name);
-            hasName = true;
-        } else {
-            System.out.println("Sorry, that name is taken. Please enter a new name.");
-            name = scanner.nextLine().trim();
-            while (name.isEmpty() || name.matches("\\s+")) {
-                System.out.print("Name cannot be blank. Please re-enter an Organization name: ");
+        while (!hasName) {
+            if (!orgNames.contains(name)) {
+                params[2] = name;
+                orgNames.add(name);
+                hasName = true;
+            } else {
+                System.out.println("Sorry, that name is taken. Please enter a new name.");
                 name = scanner.nextLine().trim();
+                while (name.isEmpty() || name.matches("\\s+")) {
+                    System.out
+                            .print("Name cannot be blank. Please re-enter an Organization name: ");
+                    name = scanner.nextLine().trim();
                 }
             }
         }
-
-        //System.out.println("orgNames: " + orgNames);
-                
         System.out.print("Enter new Organization description: ");
-        String description = scanner.nextLine().trim();        
+        String description = scanner.nextLine().trim();
         while (description.isEmpty() || description.matches("\\s+")) {
-        System.out.print("Description cannot be blank. Please re-enter an Organization description: ");
-        description = scanner.nextLine().trim();
+            System.out.print(
+                    "Description cannot be blank. Please re-enter an Organization description: ");
+            description = scanner.nextLine().trim();
         }
         params[3] = description;
 
@@ -367,8 +363,6 @@ public class UserInterface {
         private long donationSum;
         private int donationCount;
 
-        // constructor, getters, setters
-
         public AggregateDonationLine(String contributorName, long donationSum) {
             this.contributorName = contributorName;
             this.donationSum = donationSum;
@@ -425,21 +419,19 @@ public class UserInterface {
     }
 
     public static String[] login(Scanner scanner) {
-        
+
         String usernamePassword[] = new String[2];
 
         System.out.print("\nUsername: ");
         usernamePassword[0] = scanner.nextLine().trim();
         System.out.print("Password: ");
         usernamePassword[1] = scanner.nextLine().trim();
-        
+
         System.out.println();
 
         return usernamePassword;
-        
-    }
 
-    // Task 2.8
+    }
 
     public static void logout() {
 
@@ -477,7 +469,6 @@ public class UserInterface {
         return ds;
     }
 
-
     /**
      * Returns true only if the user correctly enters the current password once and
      * then enters new password exactly twice in addition to a successful request to
@@ -491,7 +482,7 @@ public class UserInterface {
         String usernamePassword = in.nextLine().trim();
         String currentPassword = org.getPassword();
         if (!currentPassword.equals(usernamePassword)) {
-            System.out.println("Wrong password entered.");
+            System.out.println("Incorrect password.");
             return false;
         } else {
             System.out.print("Please enter your new password:");
@@ -518,7 +509,6 @@ public class UserInterface {
         }
     }
 
-
     public static void main(String[] args) {
         Scanner firstin = new Scanner(System.in);
         DataManager ds = initializeDataManager(firstin);
@@ -533,17 +523,18 @@ public class UserInterface {
         }
         while (org == null && ds != null) {
             if (login == null || password == null) {
-                //TASK 3.1
-                System.out.print("\nWelcome!\n\n Please enter 1 to login, or 0 to register a new organization: ");
+                // TASK 3.1
+                System.out.print(
+                        "\nWelcome!\n\n Please enter 1 to login, or 0 to register a new organization: ");
                 String initial = firstin.nextLine();
-                
-                //error handling for initial prompt
-                while(!initial.equals("1") || !initial.equals("0")) {
+
+                // error handling for initial prompt
+                while (!initial.equals("1") || !initial.equals("0")) {
                     break;
                 }
-                
-              //tests first login attempt
-                if (initial.equals("1")) {  
+
+                // tests first login attempt
+                if (initial.equals("1")) {
                     String usernamePassword[] = login(firstin);
                     login = usernamePassword[0];
                     password = usernamePassword[1];
@@ -556,7 +547,6 @@ public class UserInterface {
                         if (!input.equals("y")) {
                             System.out.println("Goodbye!");
                             logout();
-                            //break;
                         }
                     }
                 } else if (initial.equals("0")) {
@@ -564,43 +554,31 @@ public class UserInterface {
                     login = newOrgParams[0];
                     password = newOrgParams[1];
                     name = newOrgParams[2];
-                    description = newOrgParams[3]; 
-                    //send new org params to dataManager
+                    description = newOrgParams[3];
+                    // send new org params to dataManager
                     try {
                         org = ds.createNewOrg(newOrgParams);
-                    } catch (Exception e){
-                        System.out.println("Database Error. New organization not created. Press any key to try again.");
+                    } catch (Exception e) {
+                        System.out.println(
+                                "Database Error. New organization not created. Press any key to try again.");
                         firstin.nextLine();
                         String StringArray[] = new String[2];
                         main(StringArray);
-                    }    
+                    }
                 }
-            } 
-            //else {
-//                try {
-//                    org = ds.attemptLogin(login, password);
-//                } catch (Exception e) {
-//                    System.out.println(
-//                            "Error in retrieving or parsing data from database. Do you want to try again? Type 'y' for yes or enter another key to discontinue.");
-//                    String input = firstin.nextLine().toLowerCase();
-//                    if (!input.equals("y")) {
-//                        System.out.println("Goodbye!");
-//                        break;
-//                    }
-//                }
-//            } 
-            //this will run if first login attempt fails
-            else if (org == null) {
+            } else if (org == null) {
                 if (login != null && password != null) {
-                    System.out.println("Login attempt unsuccessful. Please re-enter your username and password.");
+                    System.out.println(
+                            "Login attempt unsuccessful. Please re-enter your username and password.");
                 }
                 String usernamePassword[] = login(firstin);
                 login = usernamePassword[0];
                 password = usernamePassword[1];
                 org = ds.attemptLogin(login, password);
             }
-            
-        } //IMPORTANT: end of while loop
+
+        }
+
         if (org != null) {
             orgLogin = login;
             org.setPassword(password);

@@ -122,7 +122,7 @@ public class DataManager {
         }
     }
 
-    //task 3.1
+    // task 3.1
     /**
      * This method creates a new fund in the database using the /createOrg endpoint
      * in the API
@@ -136,7 +136,6 @@ public class DataManager {
         String name = params[2];
         String description = params[3];
         List<Fund> funds = new LinkedList<>();
-
         illegalArgumentNullChecker(name);
         illegalArgumentNullChecker(description);
         illegalArgumentNullChecker(login);
@@ -162,7 +161,8 @@ public class DataManager {
             data = (JSONObject) json.get("data");
             long errCode = (long) data.get("code");
             if (errCode == 11000) {
-                System.out.println("Duplicate key error. Login name already in system. Choose a different login.");
+                System.out.println(
+                        "Duplicate key error. Login name already in system. Choose a different login.");
             }
             throw new IllegalStateException();
         }
@@ -177,7 +177,7 @@ public class DataManager {
             return null;
         }
     }
-    
+
     /**
      * Look up the name of the contributor with the specified ID. This method uses
      * the in the API.
@@ -272,9 +272,6 @@ public class DataManager {
         } else
             return false; // did not work
     }
-
-
-
 
     /**
      * This method updates an organization using /updateOrg in the API Task 3.3
