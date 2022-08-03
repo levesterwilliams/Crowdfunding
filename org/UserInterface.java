@@ -52,7 +52,7 @@ public class UserInterface {
             System.out.println("Enter 0 to create a new fund.");
             System.out.println("Enter -1 to logout.");
             System.out.println("Enter -2 to change the password.");
-            System.out.println("Enter -3 to change the org name and description.");
+            System.out.println("Enter -3 to change the organization name and description.");
 
             int option = 0;
             boolean isInteger = false;
