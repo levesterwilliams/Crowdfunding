@@ -67,7 +67,6 @@ public class DataManager {
 
         illegalArgumentNullChecker(login);
         illegalArgumentNullChecker(password);
-
         Map<String, Object> map = new HashMap<>();
         map.put("login", login);
         map.put("password", password);
@@ -187,7 +186,6 @@ public class DataManager {
      *         found
      */
     public String getContributorName(String id) {
-
         illegalArgumentNullChecker(id);
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
@@ -275,5 +273,63 @@ public class DataManager {
             return false; // did not work
     }
 
+
+
+
+    /**
+     * This method updates an organization using /updateOrg in the API Task 3.3
+     * 
+     * @return true if successful; false if unsuccessful
+     */
+    public boolean updateOrgName(String id, String name, String description) {
+        illegalArgumentNullChecker(id);
+        illegalArgumentNullChecker(name);
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        map.put("name", name);
+        map.put("description", description);
+        String response = client.makeRequest("/updateOrgName", map);
+        JSONParser parser = new JSONParser();
+        JSONObject json;
+        try {
+            json = (JSONObject) parser.parse(response);
+        } catch (Exception e) {
+            throw new IllegalStateException();
+        }
+        String status = (String) json.get("status");
+        if (status.equals("success")) {
+            return true;
+        } else
+            return false;
+    }
+
+    /**
+     * Updates the password of the Organization with specific id in the API.
+     * 
+     * @param login    The login for Organization.
+     * @param password The updated password for Organization.
+     * @return true if request is successful; otherwise, return false
+     */
+    public boolean updatePassword(String id, String password) {
+        illegalArgumentNullChecker(id);
+        illegalArgumentNullChecker(password);
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        map.put("password", password);
+        String response = client.makeRequest("/updateOrgPassword", map);
+
+        JSONParser parser = new JSONParser();
+        JSONObject json;
+        try {
+            json = (JSONObject) parser.parse(response);
+        } catch (Exception e) {
+            throw new IllegalStateException();
+        }
+        String status = (String) json.get("status");
+        if (status.equals("success")) {
+            return true;
+        } else
+            return false;
+    }
 
 }
