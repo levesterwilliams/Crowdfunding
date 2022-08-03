@@ -7,6 +7,13 @@ import java.util.Map;
 import org.json.simple.JSONObject;
 import org.junit.Test;
 
+/**
+ * 
+ * Test suite for DataManager.updateOrgPassword() method.
+ * 
+ * @author Levester Williams
+ *
+ */
 public class UpdateOrgPasswordTest {
 
     /**

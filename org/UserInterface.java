@@ -229,7 +229,6 @@ public class UserInterface {
 
     }
 
-
     // task 3.3
     public boolean checkPassword(String password) {
 
@@ -241,7 +240,6 @@ public class UserInterface {
         }
 
     }
-
 
     public void displayFund(int fundNumber) {
 
@@ -432,10 +430,7 @@ public class UserInterface {
 
         return usernamePassword;
 
-<<<<<<< HEAD
     }
-=======
->>>>>>> 4622391a25efac84137a058a1ef061421e3bbdb4
 
     public static void logout() {
         System.out.println("You logged out!");
@@ -472,11 +467,6 @@ public class UserInterface {
         return ds;
     }
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 4622391a25efac84137a058a1ef061421e3bbdb4
     /**
      * Returns true only if the user correctly enters the current password once and
      * then enters new password exactly twice in addition to a successful request to
@@ -517,13 +507,6 @@ public class UserInterface {
         }
     }
 
-<<<<<<< HEAD
-=======
-
-
-    
-
->>>>>>> 4622391a25efac84137a058a1ef061421e3bbdb4
     public static void main(String[] args) {
         Scanner firstin = new Scanner(System.in);
         DataManager ds = initializeDataManager(firstin);
@@ -556,7 +539,8 @@ public class UserInterface {
                     try {
                         org = ds.attemptLogin(login, password);
                     } catch (Exception e) {
-                        System.out.println("Error in retrieving or parsing data from database. Would you like to try again? Type 'y' for yes or enter another key to discontinue.");
+                        System.out.println(
+                                "Error in retrieving or parsing data from database. Would you like to try again? Type 'y' for yes or enter another key to discontinue.");
                         String input = firstin.nextLine().toLowerCase();
                         if (!input.equals("y")) {
                             System.out.println("Goodbye!");
