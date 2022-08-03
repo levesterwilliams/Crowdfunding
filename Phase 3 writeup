@@ -68,7 +68,7 @@ Live Code Review - Lily, Levester, & Abby
 			 
 ** Task 3.3: Abby
 - I created a new method in UserInterface called updateNameDesc() to allow the user to update the org name and org description,
-as well as a helper method called checkPassword() to check the user’s password before allowing them to make changes to the org object.
+  as well as a helper method called checkPassword() to check the user’s password before allowing them to make changes to the org object.
 - I created a new method in DataManager called updateOrgName() which updates an organization using the /updateOrg endpoint in the API. 
   I also created test cases for that new method in a file called UpdateOrgNameDescTest.
 - I updated the RESTFUL API to add a method called updateOrgName() to update the name and description for a given org id in mongoDB.
