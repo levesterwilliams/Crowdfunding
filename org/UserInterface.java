@@ -26,11 +26,7 @@ public class UserInterface {
     }
 
     public void start() {
-
-        // add name to orgName list
         orgNames.add(org.getName());
-        // System.out.println("orgNames: " + orgNames);
-
         while (true) {
             System.out.println("\n\n");
             if (org.getFunds().size() > 0) {
@@ -39,9 +35,7 @@ public class UserInterface {
 
                 int count = 1;
                 for (Fund f : org.getFunds()) {
-
                     System.out.println(count + ": " + f.getName());
-
                     count++;
                 }
                 System.out.println("\nEnter the fund number to see more information.");
@@ -525,13 +519,9 @@ public class UserInterface {
                 System.out.print(
                         "\nWelcome!\n\n Please enter 1 to login, or 0 to register a new organization: ");
                 String initial = firstin.nextLine();
-
-                // error handling for initial prompt
                 while (!initial.equals("1") || !initial.equals("0")) {
                     break;
                 }
-
-                // tests first login attempt
                 if (initial.equals("1")) {
                     String usernamePassword[] = login(firstin);
                     login = usernamePassword[0];
