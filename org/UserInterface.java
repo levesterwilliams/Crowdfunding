@@ -288,7 +288,6 @@ public class UserInterface {
                 + "% of target)\n");
 
         System.out.println("To view donations aggregated by contributor, type C.");
-        System.out.println("To edit the organization's account information, type E."); // Task 3.3
         System.out.println("To delete this fund, type 9.");
         System.out.println("Otherwise, press enter to go back to the listing of funds.");
         String finalInput = in.nextLine();
@@ -551,7 +550,7 @@ public class UserInterface {
                         org = ds.attemptLogin(login, password);
                     } catch (Exception e) {
                         System.out.println(
-                                "Error in retrieving or parsing data from database. Would you like to try again? Type 'y' for yes or enter another key to discontinue.");
+                                "\nError in retrieving or parsing data from database. Would you like to try again? Type 'y' for yes or enter another key to discontinue.");
                         String input = firstin.nextLine().toLowerCase();
                         if (!input.equals("y")) {
                             System.out.println("Goodbye!");

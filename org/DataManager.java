@@ -162,7 +162,7 @@ public class DataManager {
             data = (JSONObject) json.get("data");
             long errCode = (long) data.get("code");
             if (errCode == 11000) {
-                System.out.println("Duplicate key error. Login name already in system. Choose a different login.");
+                System.out.println("\nDuplicate key error. Login name already in system. Choose a different login.");
             }
             throw new IllegalStateException();
         }
