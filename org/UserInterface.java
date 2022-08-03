@@ -419,7 +419,7 @@ public class UserInterface {
         while (org == null && ds != null) {
             if (login == null || password == null) {
                 //TASK 3.1
-                System.out.print("Welcome!\n\n Please enter 1 to login, or 0 to register a new organization: ");
+                System.out.print("\nWelcome!\n\n Please enter 1 to login, or 0 to register a new organization: ");
                 String initial = firstin.nextLine();
                 
                 //error handling for initial prompt

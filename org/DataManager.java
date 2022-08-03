@@ -131,12 +131,12 @@ public class DataManager {
      * @return a new Organization object if successful; null if unsuccessful
      */
 
-        public Organization createNewOrg(String[]params) {
-           String login = params[0];
-           String password = params[1];
-           String name = params[2];
-           String description = params[3];
-           List<Fund> funds = new LinkedList<>();
+    public Organization createNewOrg(String[] params) {
+        String login = params[0];
+        String password = params[1];
+        String name = params[2];
+        String description = params[3];
+        List<Fund> funds = new LinkedList<>();
 
         illegalArgumentNullChecker(name);
         illegalArgumentNullChecker(description);
@@ -150,33 +150,34 @@ public class DataManager {
         map.put("funds", funds);
         String response = client.makeRequest("/createOrg", map);
         JSONParser parser = new JSONParser();
-        JSONObject json;
+        JSONObject json = null;
+        String status = null;
+        JSONObject data = null;
         try {
             json = (JSONObject) parser.parse(response);
+            status = (String) json.get("status");
         } catch (Exception e) {
             throw new IllegalStateException();
         }
-        String status = (String) json.get("status");
-        jsonErrorChecker(status);
+        if (status.equals("error")) {
+            data = (JSONObject) json.get("data");
+            long errCode = (long) data.get("code");
+            if (errCode == 11000) {
+                System.out.println("Duplicate key error. Login name already in system. Choose a different login.");
+            }
+            throw new IllegalStateException();
+        }
         if (status.equals("success")) {
-            JSONObject data = (JSONObject) json.get("data");
+            data = (JSONObject) json.get("data");
             String orgId = (String) data.get("_id");
             String nameJson = (String) data.get("name");
             String descriptionJson = (String) data.get("description");
             System.out.println("\nSuccess! You may add funds now.\n");
             return new Organization(orgId, nameJson, descriptionJson);
         } else {
-//            if(status.equals("error")){
-//            JSONObject data = (JSONObject) json.get("data");
-//            String errCode = (String) data.get("code"); 
-//            if(errCode == "11000") {
-//                throw new IllegalStateException("Duplicate key error. Login name already in system. Choose a different login.");
-//                }
-//            }
             return null;
-            
-            }
         }
+    }
     
     /**
      * Look up the name of the contributor with the specified ID. This method uses

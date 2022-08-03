@@ -63,7 +63,6 @@ public class DataManager_createNewOrg_Test {
                 data.put("description", "dog pound");
                 obj.put("data", data);
                 String jsonString = obj.toJSONString();
-                System.out.println(jsonString);
                 return jsonString;
             }
         });
@@ -84,8 +83,7 @@ public class DataManager_createNewOrg_Test {
                 // creates the JSONObject for entire request
                 JSONObject obj = new JSONObject();
                 obj.put("status", "fail");
-                String jsonString = obj.toJSONString();
-                System.out.println(jsonString);
+                String jsonString = obj.toJSONString();             
                 return jsonString;
             }
         });
@@ -97,24 +95,46 @@ public class DataManager_createNewOrg_Test {
     @Test(expected = IllegalStateException.class)
     public void testDuplicateKeyException() {
         String[] params = {"woof", "bark", "dog", "dog pound"};
+        
 
         DataManager dm = new DataManager(new WebClient("localhost", 3001) {
             @Override
             public String makeRequest(String resource, Map<String, Object> queryParams) {
                 // creates the JSONObject for entire request
                 JSONObject obj = new JSONObject();
-                obj.put("status", "error");
                 JSONObject data = new JSONObject();
-                data.put("code", "11000");  
+                obj.put("status", "error");
+                data.put("code", 11000);  
                 obj.put("data", data);
                 String jsonString = obj.toJSONString();
-                System.out.println(jsonString);
                 return jsonString;
             }
         });
         Organization newOrg = dm.createNewOrg(params);
     }
     
+    
+    //tests for error code exception
+    @Test(expected = IllegalStateException.class)
+    public void testDuplicateKeyCodeNot11000() {
+        String[] params = {"woof", "bark", "dog", "dog pound"};
+        
+
+        DataManager dm = new DataManager(new WebClient("localhost", 3001) {
+            @Override
+            public String makeRequest(String resource, Map<String, Object> queryParams) {
+                // creates the JSONObject for entire request
+                JSONObject obj = new JSONObject();
+                JSONObject data = new JSONObject();
+                obj.put("status", "error");
+                data.put("code", 200);  
+                obj.put("data", data);
+                String jsonString = obj.toJSONString();
+                return jsonString;
+            }
+        });
+        Organization newOrg = dm.createNewOrg(params);
+    }
 
     /**
      * Tests for null WebClient passed to the DataManager class.
