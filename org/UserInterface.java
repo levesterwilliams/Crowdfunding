@@ -29,7 +29,7 @@ public class UserInterface {
         
         //add name to orgName list
         orgNames.add(org.getName());
-        System.out.println("orgNames: " + orgNames);
+        //System.out.println("orgNames: " + orgNames);
         
         
         while (true) {
@@ -159,7 +159,7 @@ public class UserInterface {
             }
         }
 
-        System.out.println("orgNames: " + orgNames);
+        //System.out.println("orgNames: " + orgNames);
                 
         System.out.print("Enter new Organization description: ");
         String description = scanner.nextLine().trim();        
@@ -168,14 +168,6 @@ public class UserInterface {
         description = scanner.nextLine().trim();
         }
         params[3] = description;
-
-
-//        System.out.println(params[0]);
-//        System.out.println(params[1]);
-//        System.out.println(params[2]);
-//        System.out.println(params[3]);
-        
-        
 
         return params;
 
@@ -412,31 +404,6 @@ public class UserInterface {
     }
 
     
-//Task 3.1: Organization App new user registration
-    
-// 1.  Modify existing start/main() so that it is possible for a user to start the app without providing login/password credentials, 
-    //and then they have the option of logging in (which would bring them to the existing functionality, assuming successful login) 
-    //or of creating a new organization.  //DONE (I HOPE)
-
-    
-//2. To create a new organization, 
-    //they would need to provide a login name, password, organization name, and organization description, 
-    //which would then be sent to the server using the RESTful API. This would require a change to the API, but you can refer to 
-    //the “/createOrg” endpoint in the Administrator App to get a sense of how to do this. //DONE (I HOPE)
-
-//3.  The Organization App should not allow the user to leave any of the fields blank, //DONE
-    
-    //or to specify a login name that already exists in the database. //DONE -good enough? At least it's handled by UI
-
-//4. If any error occurs, including an error communicating with the RESTful API, //FROM DATA MANAGER?? NEED TRY CATCH?
-    //the app should display a meaningful error message and allow the user to make another attempt to create an organization. //DONE 
-
-//5. If the user successfully creates an organization, they should then be shown the prompt for creating a new fund, 
-    //and the existing functionality should continue from there.  //I THINK THIS IS DONE
-
-    
-    
-    
     public static void main(String[] args) {
         Scanner firstin = new Scanner(System.in);
         DataManager ds = initializeDataManager(firstin);
@@ -488,14 +455,8 @@ public class UserInterface {
                     } catch (Exception e){
                         System.out.println("Database Error. New organization not created. Press any key to try again.");
                         firstin.nextLine();
-                        //String input = firstin.nextLine().toLowerCase();
                         String StringArray[] = new String[2];
                         main(StringArray);
-                        //if (input.equals("y")) {
-                        //System.out.println("Goodbye!");
-
-                            //break;
-                        //}
                     }    
                 }
             } 

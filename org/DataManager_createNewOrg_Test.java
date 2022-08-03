@@ -114,4 +114,64 @@ public class DataManager_createNewOrg_Test {
         });
         Organization newOrg = dm.createNewOrg(params);
     }
+    
+
+    /**
+     * Tests for null WebClient passed to the DataManager class.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testUpdateOrgPassword_WebClientIsNull() {
+        String[] params = {"woof", "bark", "dog", "dog pound"};
+        
+        DataManager dm = new DataManager(null);
+        dm.createNewOrg(params);
+        fail("DataManager.createNewOrg does not throw IllegalStateException when WebClient is null");
+    }
+
+    /**
+     * Tests for wrong port passed to WebClient.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testUpdateOrgPassword_WebClientCannotConnectToServer() {
+        String[] params = {"woof", "bark", "dog", "dog pound"};
+        
+        // this assumes no server is running on port 3002
+        DataManager dm = new DataManager(new WebClient("localhost", 3002));
+        dm.createNewOrg(params);
+        fail("DataManager.createNewOrg does not throw IllegalStateException when WebClient cannot connect to server");
+    }
+    
+    /**
+     * Tests for exception thrown when WebClient returns a null response.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testUpdateOrgPassword_WebClientReturnsNull() {
+        String[] params = {"woof", "bark", "dog", "dog pound"};
+        
+        DataManager dm = new DataManager(new WebClient("localhost", 3001) {
+            @Override
+            public String makeRequest(String resource, Map<String, Object> queryParams) {
+                return null;
+            }
+        });
+        dm.createNewOrg(params);
+        fail("DataManager.createNewOrg does not throw IllegalStateException when WebClient returns null");
+    }
+    
+    /**
+     * Tests error received when making RESTful request.
+     */
+    @Test(expected = IllegalStateException.class)
+    public void testAttemptLogin_WebClientReturnsError() {
+        String[] params = {"woof", "bark", "dog", "dog pound"};
+        
+        DataManager dm = new DataManager(new WebClient("localhost", 3001) {
+            @Override
+            public String makeRequest(String resource, Map<String, Object> queryParams) {
+                return "{\"status\":\"error\"data\":\"An unexpected database error occurred\"}";
+            }
+        });
+        dm.createNewOrg(params);
+        fail("DataManager.createNewOrg does not throw IllegalStateException when WebClient returns error");
+    }
 }
