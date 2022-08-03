@@ -29,6 +29,7 @@ app.use('/findOrgByLoginAndPassword', (req, res) => {
 	    });
     });
     
+    //test test
 //TASK 3.1    
 /*
 Create new organization/ new user registration
