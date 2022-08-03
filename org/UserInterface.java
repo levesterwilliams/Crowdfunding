@@ -15,7 +15,6 @@ public class UserInterface {
     private Organization org;
     private Scanner in = new Scanner(System.in);
     private Map<Fund, List<AggregateDonationLine>> cachedAggregateDonations = new HashMap<Fund, List<AggregateDonationLine>>();
-
     private static String orgLogin; // track for 3.3
 
     public UserInterface(DataManager dataManager, Organization org) {
@@ -118,6 +117,7 @@ public class UserInterface {
                 System.out.println("Database updated successfully");
                 org = dataManager.attemptLogin(orgLogin, password); // this is to refresh the data
             } catch (Exception e) {
+                e.printStackTrace();
                 System.out.println("Error updating database");
             }
             System.out.println("Press any key to go back to main menu.");
@@ -246,11 +246,8 @@ public class UserInterface {
                 delete = delete.toLowerCase();
             }
 
-            // if yes, delete fund
             if (delete.equals("yes") || delete.equals("y")) {
-                // pass this fund to delete fund
                 deleteFund(fund);
-
             } else if ((delete.equals("no") || delete.equals("n"))) {
                 System.out.println("");
             }

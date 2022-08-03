@@ -9,6 +9,9 @@ import org.junit.Test;
 
 public class UpdateOrgPasswordTest {
 
+    /**
+     * Tests for successful password update.
+     */
     @Test
     public void testSuccessfulUpdatePassword() {
 
@@ -25,6 +28,9 @@ public class UpdateOrgPasswordTest {
         assertTrue(dm.updatePassword("12345", "new password"));
     }
 
+    /**
+     * Tests for unsuccessful password update.
+     */
     @Test
     public void testUnSuccessfulUpdatePassword() {
 
@@ -42,7 +48,7 @@ public class UpdateOrgPasswordTest {
     }
 
     /**
-     * Tests null as argument for login
+     * Tests null as argument for login.
      */
     @Test(expected = IllegalArgumentException.class)
     public void testNullLogin() {

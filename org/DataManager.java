@@ -245,7 +245,7 @@ public class DataManager {
     }
 
     /**
-     * Updates the password of Organization.
+     * Updates the password of the Organization with specific id in the API.
      * 
      * @param login    The login for Organization.
      * @param password The updated password for Organization.
@@ -272,5 +272,4 @@ public class DataManager {
         } else
             return false;
     }
-
 }
