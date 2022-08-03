@@ -12,7 +12,8 @@
 To edit/view/delete/add organizations and contributions from the browser, 
 make sure to navigate to the admin folder and run the admin.js to launch port 3000, then open the webApp.
 Otherwise, you can access, view, update, or create an organization or add/delete funds from the console. To do this, 
-navigate to the admin folder and run api.js to lauch port 3001....finish this
+navigate to the admin folder and run api.js to lauch port 3001. To start the app, run the UserInterface.java file and 
+follow the prompt of either entering “1” to login in to an existing organization or “0” to create a new organization.
 
 **********************************************************************
 
@@ -36,21 +37,40 @@ Live Code Review - Lily, Levester, & Abby
 
 * TEAM MEMBER CONTRIBUTION DESCRIPTIONS *
 
-* Task 3.1: 
+** Task 3.1: Lily
+- I rearranged the logic of the main method to accommodate the new org registration functionality. When the user starts the app, 
+  they are now prompted to enter a 1 to login to an existing organization or a 0 to make a new organization. There is error handling on this 
+  feature so they must choose 1 or 0 to continue.  
+- I added a new static method, createNewOrganization(Scanner), for collecting the user input from the UI. The user must enter a login, 
+  password, new org name, and org description. They cannot leave the prompts blank or empty.  The org name feature discourages the user from entering an org name 
+  that already exists in this database, but this is only handled from the UI, so the user must login for the org name to be added to a new global set list variable "orgNames".
+  If the user enters everything correctly a set of parameters will be sent to a new method in the dataManager class, createNewOrg(String[] params), to create the new organization.
+- I added an api endpoint "/createOrg" to send requests to the database.
+- There is separate error handling in the UI for database errors, such as when a user tries to create a new org with the same login name. In this case, 
+  an exception will be thrown in dataManager and the user will see a “duplicate key error” message and be prompted to try again.
+- Once the user has created a new organization, they can immediately start adding funds to the new organization.
+- Testing for the createNewOrg(String[] params) method can be found in the DataManager_createNewOrg_Test.java file.
  			 
-* Task 3.2: Levester
+** Task 3.2: Levester
 - In api.js, we created an endpoint "/updateOrgPassword" in api.js wherein the organization's ID and new password are passed to the server and password is updated only if no errors occurred and status is "success."
-- In DataManager.java, we created a new method called updatePassword() that takes as an argument String id, the organization's id, and String password, the new password. The arguments id and password are sent to the server using RESTful AI with the endpoint "/updateOrgPassword". If "status".equals("success"), the method returns true; otherwise, it returns false. If id and password are null, IllegalArgumentExceptions are thrown. If errors occuring during sending or parsing the JSON object, IllegalStateException is thrown.
+- In DataManager.java, we created a new method called updatePassword() that takes as an argument String id, the organization's id, and String password, the new password. 
+  The arguments id and password are sent to the server using RESTful AI with the endpoint "/updateOrgPassword". If "status".equals("success"), the method returns true; otherwise, it returns false. 
+  If id and password are null, IllegalArgumentExceptions are thrown. If errors occuring during sending or parsing the JSON object, IllegalStateException is thrown.
 - In Organization.java, we added a new private instance field, String password, and public getter and setters to retreive and set the org's password.
-- In UserInterface.java, we added a public method called updatePassowrd() that returns true if the password was successfully updated and false if not. Within that method, the user is prompted to enter their current password. If entered incorrectly or the input is null, the method returns false. If entered correctly, the user is prompted to type in their new password twice. If the inputs are null, do not match, or are both blanks, then the method returns false. Otherwise, the method invokes on the DataManager object updatePassword() and pass the org's id and new password. If that method invocation return true, then the Organization.setPassword() is invoked to set the new password and the method returns true. If not, return false. For each step if false is returned, an appropriate error message is printed. 
-- In UserInterface.java, within the start() method, the user in the main menu can type "-2" to change their password and updatePassowrd() method is called. If it return true, a statment indicating success is printed; otherwise, a statement indicating failure is printed.
+- In UserInterface.java, we added a public method called updatePassowrd() that returns true if the password was successfully updated and false if not. Within that method, 
+  the user is prompted to enter their current password. If entered incorrectly or the input is null, the method returns false. If entered correctly, the user is prompted to type in their new password twice. 
+  If the inputs are null, do not match, or are both blanks, then the method returns false. Otherwise, the method invokes on the DataManager object updatePassword() and pass the org's id and new password. 
+  If that method invocation return true, then the Organization.setPassword() is invoked to set the new password and the method returns true. 
+  If not, return false. For each step if false is returned, an appropriate error message is printed. 
+- In UserInterface.java, within the start() method, the user in the main menu can type "-2" to change their password and updatePassowrd() method is called. 
+  If it return true, a statment indicating success is printed; otherwise, a statement indicating failure is printed.
+- Testing for the updatePassword method can be found in the UpdateOrgPasswordTest.java file.
 			 
-* Task 3.3: Abby
-** I created a new method in UserInterface called updateNameDesc() to allow the user to update the org name and org description,
+** Task 3.3: Abby
+- I created a new method in UserInterface called updateNameDesc() to allow the user to update the org name and org description,
 as well as a helper method called checkPassword() to check the user’s password before allowing them to make changes to the org object.
-** I created a new method in DataManager called updateOrgName() which updates an organization using the /updateOrg endpoint in the API.
-l also created test cases for that new method in a file called UpdateOrgNameDescTest.
-** I updated the RESTFUL API to add a method called updateOrgName() to update the name and description for a given org id in mongoDB.
-
+- I created a new method in DataManager called updateOrgName() which updates an organization using the /updateOrg endpoint in the API. 
+  I also created test cases for that new method in a file called UpdateOrgNameDescTest.
+- I updated the RESTFUL API to add a method called updateOrgName() to update the name and description for a given org id in mongoDB.
 
 **********************************************************************
