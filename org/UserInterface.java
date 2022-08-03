@@ -368,7 +368,7 @@ public class UserInterface {
     }
 
     // Task 2.8
-    public void logout() {
+    public static void logout() {
         System.out.println("You logged out!");
         System.out.println();
         String StringArray[] = new String[2];
@@ -440,7 +440,8 @@ public class UserInterface {
                         String input = firstin.nextLine().toLowerCase();
                         if (!input.equals("y")) {
                             System.out.println("Goodbye!");
-                            break;
+                            logout();
+                            //break;
                         }
                     }
                 } else if (initial.equals("0")) {
