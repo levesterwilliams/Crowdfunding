@@ -6,9 +6,6 @@ public class Organization {
     private String id;
     private String name;
     private String description;
-    /**
-     * Adds a password
-     */
     private String password;
 
     private List<Fund> funds;
@@ -28,22 +25,17 @@ public class Organization {
         return name;
     }
 
-    
     public String setName(String name) {
         return this.name = name;
     }
-
-
 
     public String getDescription() {
         return description;
     }
 
-    
     public String setDesc(String description) {
         return this.description = description;
     }
-
 
     public List<Fund> getFunds() {
         return funds;

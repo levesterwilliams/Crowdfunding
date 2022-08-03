@@ -67,7 +67,6 @@ public class DataManager {
 
         illegalArgumentNullChecker(login);
         illegalArgumentNullChecker(password);
-
         Map<String, Object> map = new HashMap<>();
         map.put("login", login);
         map.put("password", password);
@@ -131,7 +130,6 @@ public class DataManager {
      *         found
      */
     public String getContributorName(String id) {
-
         illegalArgumentNullChecker(id);
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);

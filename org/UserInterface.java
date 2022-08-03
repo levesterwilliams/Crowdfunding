@@ -209,27 +209,26 @@ public class UserInterface {
             donations_sum = donations_sum + donation.getAmount();
         }
 
-        donations_percent = donations_sum * 100 / fund.getTarget();
+        if (fund.getTarget() != 0) {
+            donations_percent = donations_sum * 100 / fund.getTarget();
+        } else {
+            donations_percent = 0;
+        }
 
         System.out.println("Total donation amount: $" + donations_sum + " (" + donations_percent
                 + "% of target)\n");
 
         System.out.println("To view donations aggregated by contributor, type C.");
-
         System.out.println("To edit the organization's account information, type E."); // Task 3.3
-
         System.out.println("To delete this fund, type 9.");
         System.out.println("Otherwise, press enter to go back to the listing of funds.");
         String finalInput = in.nextLine();
-
         if (finalInput.length() == 1) {
             if (finalInput.charAt(0) == 'c' || finalInput.charAt(0) == 'C') {
                 displayAggregatedDonations(fund);
                 System.out.println("Press any key to go back to the listing of funds.");
                 in.nextLine();
-
             }
-
         }
 
         if (finalInput.equals("9")) {
@@ -455,7 +454,6 @@ public class UserInterface {
         DataManager ds = initializeDataManager(firstin);
         String login = null;
         String password = null;
-
         Organization org = null;
         if (args.length == 2) {
             login = args[0];
@@ -487,11 +485,8 @@ public class UserInterface {
             }
         }
         if (org != null) {
-
             orgLogin = login;
-
             org.setPassword(password);
-
             UserInterface ui = new UserInterface(ds, org);
             ui.start();
         }
