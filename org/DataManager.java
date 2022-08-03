@@ -285,6 +285,7 @@ public class DataManager {
     public boolean updateOrgName(String id, String name, String description) {
         illegalArgumentNullChecker(id);
         illegalArgumentNullChecker(name);
+        illegalArgumentNullChecker(description);
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
         map.put("name", name);
