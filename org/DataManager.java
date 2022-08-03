@@ -161,8 +161,12 @@ public class DataManager {
             data = (JSONObject) json.get("data");
             long errCode = (long) data.get("code");
             if (errCode == 11000) {
+<<<<<<< HEAD
                 System.out.println(
                         "Duplicate key error. Login name already in system. Choose a different login.");
+=======
+                System.out.println("\nDuplicate key error. Login name already in system. Choose a different login.");
+>>>>>>> 4622391a25efac84137a058a1ef061421e3bbdb4
             }
             throw new IllegalStateException();
         }
@@ -273,6 +277,13 @@ public class DataManager {
             return false; // did not work
     }
 
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> 4622391a25efac84137a058a1ef061421e3bbdb4
     /**
      * This method updates an organization using /updateOrg in the API Task 3.3
      * 
@@ -281,6 +292,7 @@ public class DataManager {
     public boolean updateOrgName(String id, String name, String description) {
         illegalArgumentNullChecker(id);
         illegalArgumentNullChecker(name);
+        illegalArgumentNullChecker(description);
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
         map.put("name", name);
@@ -328,5 +340,6 @@ public class DataManager {
         } else
             return false;
     }
+
 
 }

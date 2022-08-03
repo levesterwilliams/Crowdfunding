@@ -50,7 +50,7 @@ public class UserInterface {
             System.out.println("Enter 0 to create a new fund.");
             System.out.println("Enter -1 to logout.");
             System.out.println("Enter -2 to change the password.");
-            System.out.println("Enter -3 to change the org name and description.");
+            System.out.println("Enter -3 to change the organization name and description.");
 
             int option = 0;
             boolean isInteger = false;
@@ -229,6 +229,7 @@ public class UserInterface {
 
     }
 
+
     // task 3.3
     public boolean checkPassword(String password) {
 
@@ -240,6 +241,7 @@ public class UserInterface {
         }
 
     }
+
 
     public void displayFund(int fundNumber) {
 
@@ -284,7 +286,6 @@ public class UserInterface {
                 + "% of target)\n");
 
         System.out.println("To view donations aggregated by contributor, type C.");
-        System.out.println("To edit the organization's account information, type E."); // Task 3.3
         System.out.println("To delete this fund, type 9.");
         System.out.println("Otherwise, press enter to go back to the listing of funds.");
         String finalInput = in.nextLine();
@@ -431,10 +432,12 @@ public class UserInterface {
 
         return usernamePassword;
 
+<<<<<<< HEAD
     }
+=======
+>>>>>>> 4622391a25efac84137a058a1ef061421e3bbdb4
 
     public static void logout() {
-
         System.out.println("You logged out!");
         System.out.println();
         String StringArray[] = new String[2];
@@ -469,6 +472,11 @@ public class UserInterface {
         return ds;
     }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 4622391a25efac84137a058a1ef061421e3bbdb4
     /**
      * Returns true only if the user correctly enters the current password once and
      * then enters new password exactly twice in addition to a successful request to
@@ -509,6 +517,13 @@ public class UserInterface {
         }
     }
 
+<<<<<<< HEAD
+=======
+
+
+    
+
+>>>>>>> 4622391a25efac84137a058a1ef061421e3bbdb4
     public static void main(String[] args) {
         Scanner firstin = new Scanner(System.in);
         DataManager ds = initializeDataManager(firstin);
@@ -541,8 +556,7 @@ public class UserInterface {
                     try {
                         org = ds.attemptLogin(login, password);
                     } catch (Exception e) {
-                        System.out.println(
-                                "Error in retrieving or parsing data from database. Would you like to try again? Type 'y' for yes or enter another key to discontinue.");
+                        System.out.println("Error in retrieving or parsing data from database. Would you like to try again? Type 'y' for yes or enter another key to discontinue.");
                         String input = firstin.nextLine().toLowerCase();
                         if (!input.equals("y")) {
                             System.out.println("Goodbye!");
