@@ -432,10 +432,8 @@ public class UserInterface {
 
         return usernamePassword;
 
-<<<<<<< HEAD
     }
-=======
->>>>>>> 4622391a25efac84137a058a1ef061421e3bbdb4
+
 
     public static void logout() {
         System.out.println("You logged out!");
@@ -472,11 +470,7 @@ public class UserInterface {
         return ds;
     }
 
-<<<<<<< HEAD
-=======
 
-
->>>>>>> 4622391a25efac84137a058a1ef061421e3bbdb4
     /**
      * Returns true only if the user correctly enters the current password once and
      * then enters new password exactly twice in addition to a successful request to
@@ -517,13 +511,7 @@ public class UserInterface {
         }
     }
 
-<<<<<<< HEAD
-=======
 
-
-    
-
->>>>>>> 4622391a25efac84137a058a1ef061421e3bbdb4
     public static void main(String[] args) {
         Scanner firstin = new Scanner(System.in);
         DataManager ds = initializeDataManager(firstin);
