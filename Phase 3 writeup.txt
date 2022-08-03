@@ -1,0 +1,46 @@
+/**********************************************************************
+ *  Group 4 - PHASE 3 Write up
+ *
+ *  GROUP MEMBERS:
+ *    - Levester Williams
+ *    - Lily Simmons
+ *    - Abby Wank                                                 
+/**********************************************************************/
+
+* INSTRUCTIONS TO START APP
+
+To edit/view/delete/add organizations and contributions from the browser, 
+make sure to navigate to the admin folder and run the admin.js to launch port 3000, then open the webApp.
+Otherwise, you can access, view, update, or create an organization or add/delete funds from the console. To do this, 
+navigate to the admin folder and run api.js to lauch port 3001....finish this
+
+**********************************************************************
+
+* OPTIONAL tasks to grade:
+
+Task 3.1
+Task 3.2
+Task 3.3
+
+**********************************************************************
+
+* WHO WORKED ON WHAT:
+
+Task 3.1 - Lily
+Task 3.2 - Levester
+Task 3.3 - Abby 
+Write Up - Lily, Abby, Levester
+Live Code Review - Lily, Levester, & Abby
+
+**********************************************************************
+
+* TEAM MEMBER CONTRIBUTION DESCRIPTIONS *
+
+* Task 3.1: 
+ 			 
+* Task 3.2: 
+			 
+* Task 3.3: 
+
+
+**********************************************************************

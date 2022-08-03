@@ -29,6 +29,33 @@ app.use('/findOrgByLoginAndPassword', (req, res) => {
 	    });
     });
     
+
+//TASK 3.1    
+/*
+Create new organization/ new user registration
+*/
+app.use('/createOrg', (req, res) => {
+
+	var org = new Organization({
+		login: req.query.login,
+		password: req.query.password,
+		name: req.query.name,
+		description: req.query.description,
+		funds: []
+	    });
+
+	org.save( (err) => {
+  		 if (err) {
+		    res.json({ "status": "error", "data" : err});
+		}
+		else {   
+          //console.log(org);
+		    res.json({ "status": "success", "data" : org});
+		}
+	    });
+
+    });
+
 /*
 Handle the form submission to update an org's password
 */
@@ -40,6 +67,7 @@ app.use('/updateOrgPassword', (req, res) => {
 	var action = { "$set" : update };
 
 	Organization.findOneAndUpdate( filter, action, { new : true }, (err, result) => {
+
 		if (err) {
 		    res.json({ "status": "error", "data" : err});
 		}
@@ -50,6 +78,7 @@ app.use('/updateOrgPassword', (req, res) => {
 	    });
 	
     });
+
 
 /*
 Create a new fund
